@@ -37,7 +37,7 @@ const lineOptions = {
 
 const Dashboard = () => {
   return (
-    <Box sx={{ padding: '20px', backgroundColor: '#f5f5f5', minHeight: '100vh' }}>
+    <Box sx={ { padding: '20px', backgroundColor: '#f5f5f5', minHeight: '100vh' }}>
       <Stack direction="row" spacing={2} justifyContent="space-between" sx={{ flexWrap: 'wrap' }}>
         {/* Pie Chart */}
         <Box sx={{ flexBasis: { xs: '100%', md: '30%' } }}>
