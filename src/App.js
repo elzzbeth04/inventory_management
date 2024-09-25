@@ -1,24 +1,21 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { Box, Stack } from '@mui/material';
+import Sidebar from './components/sidebar';
+import Dashboard from './components/dashboard';
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Stack direction="row" sx={{ height: '100vh' }}>
+      {/* Sidebar */}
+      <Box sx={{ width: '16.67%', backgroundColor: '#003366' }}>
+        <Sidebar />
+      </Box>
+
+      {/* Dashboard */}
+      <Box sx={{ width: '83.33%' }}>
+        <Dashboard />
+      </Box>
+    </Stack>
   );
 }
 
