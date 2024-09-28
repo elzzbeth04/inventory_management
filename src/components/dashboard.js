@@ -4,7 +4,7 @@ import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 
 const pieOptions = {
-  chart: { type: 'pie', backgroundColor: 'transparent' },
+  chart: { type: 'pie', backgroundColor: 'transparent', },
   title: { text: '' },
   series: [{
     data: [
@@ -72,5 +72,4 @@ const Dashboard = () => {
     </Box>
   );
 };
-
 export default Dashboard;

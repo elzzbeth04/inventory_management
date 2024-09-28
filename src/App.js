@@ -37,23 +37,43 @@ export default App;
 import { Box, Stack } from '@mui/material';
 import Sidebar from './components/sidebar';
 import Dashboard from './components/dashboard';
+<<<<<<< Updated upstream
 import AddUser from './components/AddUser';
 import './styles.css';
+=======
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import AddProduct from './components/product/addproduct';
+import ViewProduct from './components/product/viewprodct'
+import './App.css';
+import './index.css';
+>>>>>>> Stashed changes
 
 const App = () => {
   return (
+    <Router>
     <Stack direction="row" sx={{ height: '100vh' }}>
       
       <Box sx={{ width: '16.67%', backgroundColor: '#003366' }}>
         <Sidebar />
       </Box>
 
+<<<<<<< Updated upstream
       
       <Box sx={{ width: '83.33%' }}>
         <Dashboard />
+=======
+      {/* Dashboard */}
+      <Box sx={{ width: '83.33%', backgroundColor: '#f4f4f4' }}>
+        <Routes>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/addproduct" element={<AddProduct />} />
+          <Route path="/viewproduct" element={<ViewProduct />} />
+        </Routes>
+>>>>>>> Stashed changes
       </Box>
     </Stack>
+  </Router>
   );
-}
+};
 
 export default App;*/
