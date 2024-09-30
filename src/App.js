@@ -21,7 +21,7 @@ const App = () => {
         </Box>
 
         {/* Content area */}
-        <Box sx={{ width: '83.33%' }}>
+        <Box  sx={{ width: '83.33%' }}>
           <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="/adduser" element={<AddUser />} />
