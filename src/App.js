@@ -6,10 +6,14 @@ import Dashboard from './components/dashboard';
 import AddUser from './components/user/adduser';
 import ViewUser from './components/user/viewuser';
 import AddProduct from './components/product/addproduct';
-import ViewProduct from './components/product/viewprodct'
+import ViewProduct from './components/product/viewprodct';
+import SupplierTable from './components/suppliers/supplierstable';
+import CreateSupplier from './components/suppliers/createsupplier';
+import ViewSuppliers from './components/suppliers/viewsuppliers';
+import ViewOrder from './components/order/vieworder';
+import CreateOrder from './components/order/createorder';
 import './App.css';
 import './index.css';
-
 
 const App = () => {
   return (
@@ -21,14 +25,20 @@ const App = () => {
         </Box>
 
         {/* Content area */}
-        <Box  sx={{ width: '83.33%' }}>
+        <Box sx={{ width: '83.33%' }}>
           <Routes>
+            {/* Routes from first version */}
             <Route path="/" element={<Dashboard />} />
             <Route path="/adduser" element={<AddUser />} />
             <Route path="/viewuser" element={<ViewUser />} />
             <Route path="/addproduct" element={<AddProduct />} />
             <Route path="/viewproduct" element={<ViewProduct />} />
-            {/* Add other routes as necessary */}
+            
+            {/* Routes from second version */}
+            <Route path="/create-suppliers" element={<CreateSupplier />} />
+            <Route path="/view-suppliers" element={<ViewSuppliers />} />
+            <Route path="/view-orders" element={<ViewOrder />} />
+            <Route path="/create-orders" element={<CreateOrder />} />
           </Routes>
         </Box>
       </Stack>
@@ -37,5 +47,3 @@ const App = () => {
 };
 
 export default App;
-
-

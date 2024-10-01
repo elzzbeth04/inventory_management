@@ -1,21 +1,15 @@
 import React, { useState } from 'react';
 import { List, Avatar, Typography, Box, Paper } from '@mui/material';
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-import VisibilityIcon from '@mui/icons-material/Visibility';
 import { Link } from 'react-router-dom';
 
 const Sidebar = () => {
   const [showProductOptions, setShowProductOptions] = useState(false);
-  const [showUserOptions, setShowUserOptions] = useState(false);
   const [showSupplierOptions, setShowSupplierOptions] = useState(false);
   const [showPurchaseOrderOptions, setShowPurchaseOrderOptions] = useState(false);
+  const [showUserOptions, setShowUserOptions] = useState(false);
 
   const handleProductClick = () => {
     setShowProductOptions(!showProductOptions);
-  };
-
-  const handleUserClick = () => {
-    setShowUserOptions(!showUserOptions);
   };
 
   const handleSupplierClick = () => {
@@ -24,6 +18,10 @@ const Sidebar = () => {
 
   const handlePurchaseOrderClick = () => {
     setShowPurchaseOrderOptions(!showPurchaseOrderOptions);
+  };
+
+  const handleUserClick = () => {
+    setShowUserOptions(!showUserOptions);
   };
 
   return (
@@ -48,7 +46,6 @@ const Sidebar = () => {
         
         {showProductOptions && (
           <Box sx={{ paddingLeft: 1, marginTop: '1px' }}>
-            {/* Add Product */}
             <Paper
               elevation={1}
               sx={{
@@ -63,30 +60,26 @@ const Sidebar = () => {
                 '&:hover': { backgroundColor: '#0059b3', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)' }
               }}
               component={Link}
-              to="/addproduct"  // Link to Add Product page
+              to="/addproduct"
             >
-              {/* <AddCircleOutlineIcon sx={{ marginRight: '4px' }} /> */}
               <Typography>Add Product</Typography>
             </Paper>
-
-            {/* View Product */}
             <Paper
-             elevation={1}
-             sx={{
-               display: 'flex',
-               alignItems: 'center',
-               padding: '5px',
-               marginBottom: '5px',
-               backgroundColor: '#003366',
+              elevation={1}
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                padding: '5px',
+                marginBottom: '5px',
+                backgroundColor: '#003366',
                 color: '#fff',
                 cursor: 'pointer',
                 textDecoration: 'none',
                 '&:hover': { backgroundColor: '#0059b3', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)' }
               }}
               component={Link}
-              to="/viewproduct"  // Link to View Product page
+              to="/viewproduct"
             >
-              {/* <VisibilityIcon sx={{ marginRight: '4px' }} /> */}
               <Typography>View Product</Typography>
             </Paper>
           </Box>
@@ -100,8 +93,7 @@ const Sidebar = () => {
         </Box>
 
         {showSupplierOptions && (
-          <Box sx={{  paddingLeft: 1, marginTop: '1px' }}>
-            {/* Add Supplier */}
+          <Box sx={{ paddingLeft: 1, marginTop: '1px' }}>
             <Paper
               elevation={1}
               sx={{
@@ -110,36 +102,32 @@ const Sidebar = () => {
                 padding: '5px',
                 marginBottom: '5px',
                 backgroundColor: '#003366',
-                 color: '#fff',
-                 cursor: 'pointer',
-                 textDecoration: 'none',
-                 '&:hover': { backgroundColor: '#0059b3', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)' }
-               }}
-              component={Link}
-              to="/addsupplier"  // Link to Add Supplier page
-            >
-              {/* <AddCircleOutlineIcon sx={{ marginRight: '10px' }} /> */}
-              <Typography>Add Supplier</Typography>
-            </Paper>
-
-            {/* View Supplier */}
-            <Paper
-             elevation={1}
-             sx={{
-               display: 'flex',
-               alignItems: 'center',
-               padding: '5px',
-               marginBottom: '5px',
-               backgroundColor: '#003366',
                 color: '#fff',
                 cursor: 'pointer',
                 textDecoration: 'none',
                 '&:hover': { backgroundColor: '#0059b3', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)' }
               }}
               component={Link}
-              to="/viewsupplier"  // Link to View Supplier page
+              to="/create-suppliers"
             >
-              {/* <VisibilityIcon sx={{ marginRight: '10px' }} /> */}
+              <Typography>Add Supplier</Typography>
+            </Paper>
+            <Paper
+              elevation={1}
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                padding: '5px',
+                marginBottom: '5px',
+                backgroundColor: '#003366',
+                color: '#fff',
+                cursor: 'pointer',
+                textDecoration: 'none',
+                '&:hover': { backgroundColor: '#0059b3', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)' }
+              }}
+              component={Link}
+              to="/view-suppliers"
+            >
               <Typography>View Supplier</Typography>
             </Paper>
           </Box>
@@ -153,8 +141,7 @@ const Sidebar = () => {
         </Box>
 
         {showPurchaseOrderOptions && (
-          <Box sx={{  paddingLeft: 1, marginTop: '1px' }}>
-            {/* Add Purchase Order */}
+          <Box sx={{ paddingLeft: 1, marginTop: '1px' }}>
             <Paper
               elevation={1}
               sx={{
@@ -169,30 +156,26 @@ const Sidebar = () => {
                 '&:hover': { backgroundColor: '#0059b3', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)' }
               }}
               component={Link}
-              to="/addpurchaseorder"  // Link to Add Purchase Order page
+              to="/create-orders"
             >
-              {/* <AddCircleOutlineIcon sx={{ marginRight: '10px' }} /> */}
               <Typography>Add Purchase Order</Typography>
             </Paper>
-
-            {/* View Purchase Order */}
             <Paper
-             elevation={1}
-             sx={{
-               display: 'flex',
-               alignItems: 'center',
-               padding: '5px',
-               marginBottom: '5px',
-               backgroundColor: '#003366',
+              elevation={1}
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                padding: '5px',
+                marginBottom: '5px',
+                backgroundColor: '#003366',
                 color: '#fff',
                 cursor: 'pointer',
                 textDecoration: 'none',
                 '&:hover': { backgroundColor: '#0059b3', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)' }
               }}
               component={Link}
-              to="/viewpurchaseorder"  // Link to View Purchase Order page
+              to="/view-orders"
             >
-              {/* <VisibilityIcon sx={{ marginRight: '10px' }} /> */}
               <Typography>View Purchase Order</Typography>
             </Paper>
           </Box>
@@ -206,29 +189,7 @@ const Sidebar = () => {
         </Box>
 
         {showUserOptions && (
-          <Box sx={{  paddingLeft: 1, marginTop: '1px' }}>
-            {/* Add User */}
-            <Paper
-             elevation={1}
-             sx={{
-               display: 'flex',
-               alignItems: 'center',
-               padding: '5px',
-               marginBottom: '5px',
-               backgroundColor: '#003366',
-                color: '#fff',
-                cursor: 'pointer',
-                textDecoration: 'none',
-                '&:hover': { backgroundColor: '#0059b3',  }
-              }}
-              component={Link}
-              to="/adduser"  // Link to Add User page
-            >
-              {/* <AddCircleOutlineIcon sx={{ marginRight: '10px' }} /> */}
-              <Typography>Add User</Typography>
-            </Paper>
-
-            {/* View User */}
+          <Box sx={{ paddingLeft: 1, marginTop: '1px' }}>
             <Paper
               elevation={1}
               sx={{
@@ -243,9 +204,26 @@ const Sidebar = () => {
                 '&:hover': { backgroundColor: '#0059b3', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)' }
               }}
               component={Link}
-              to="/viewuser"  // Link to View User page
+              to="/adduser"
             >
-              {/* <VisibilityIcon sx={{ marginRight: '10px' }} /> */}
+              <Typography>Add User</Typography>
+            </Paper>
+            <Paper
+              elevation={1}
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                padding: '5px',
+                marginBottom: '5px',
+                backgroundColor: '#003366',
+                color: '#fff',
+                cursor: 'pointer',
+                textDecoration: 'none',
+                '&:hover': { backgroundColor: '#0059b3', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)' }
+              }}
+              component={Link}
+              to="/viewuser"
+            >
               <Typography>View User</Typography>
             </Paper>
           </Box>
