@@ -14,6 +14,7 @@ import ViewOrder from './components/order/vieworder';
 import CreateOrder from './components/order/createorder';
 import './App.css';
 import './index.css';
+import Reports from './components/reports';
 
 const App = () => {
   return (
@@ -29,6 +30,7 @@ const App = () => {
           <Routes>
             {/* Routes from first version */}
             <Route path="/" element={<Dashboard />} />
+            <Route path="/reports" element={<Reports />} />
             <Route path="/adduser" element={<AddUser />} />
             <Route path="/viewuser" element={<ViewUser />} />
             <Route path="/addproduct" element={<AddProduct />} />

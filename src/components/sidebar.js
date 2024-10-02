@@ -36,7 +36,9 @@ const Sidebar = () => {
         <Link to="/" style={{ display: 'block', color: 'inherit', padding: '10px 0', textDecoration: 'none' }}>
           <Box sx={{ padding: '10px 0', color: 'inherit' }}>Dashboard</Box>
         </Link>
-
+        <Link to="/reports" style={{ display: 'block', color: 'inherit', padding: '10px 0', textDecoration: 'none' }}>
+          <Box sx={{ padding: '10px 0', color: 'inherit' }}>Reports</Box>
+        </Link>
         <Box 
           onClick={handleProductClick} 
           sx={{ display: 'block', color: 'inherit', padding: '10px 0', cursor: 'pointer' }}
