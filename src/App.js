@@ -6,7 +6,15 @@ import Dashboard from './components/dashboard';
 import Reports from './components/reports';
 import AddUser from './components/user/adduser';
 import ViewUser from './components/user/viewuser';
-import './styles.css';
+import AddProduct from './components/product/addproduct';
+import ViewProduct from './components/product/viewprodct';
+import SupplierTable from './components/suppliers/supplierstable';
+import CreateSupplier from './components/suppliers/createsupplier';
+import ViewSuppliers from './components/suppliers/viewsuppliers';
+import ViewOrder from './components/order/vieworder';
+import CreateOrder from './components/order/createorder';
+import './App.css';
+import './index.css';
 
 const App = () => {
   return (
@@ -20,11 +28,19 @@ const App = () => {
         {/* Content area */}
         <Box sx={{ width: '83.33%' }}>
           <Routes>
+            {/* Routes from first version */}
             <Route path="/" element={<Dashboard />} />
             <Route path="/reports" element={<Reports />} />
             <Route path="/adduser" element={<AddUser />} />
             <Route path="/viewuser" element={<ViewUser />} />
-            {/* Add other routes as necessary */}
+            <Route path="/addproduct" element={<AddProduct />} />
+            <Route path="/viewproduct" element={<ViewProduct />} />
+            
+            {/* Routes from second version */}
+            <Route path="/create-suppliers" element={<CreateSupplier />} />
+            <Route path="/view-suppliers" element={<ViewSuppliers />} />
+            <Route path="/view-orders" element={<ViewOrder />} />
+            <Route path="/create-orders" element={<CreateOrder />} />
           </Routes>
         </Box>
       </Stack>
@@ -33,29 +49,3 @@ const App = () => {
 };
 
 export default App;
-
-
-/*import React from 'react';
-import { Box, Stack } from '@mui/material';
-import Sidebar from './components/sidebar';
-import Dashboard from './components/dashboard';
-import AddUser from './components/AddUser';
-import './styles.css';
-
-const App = () => {
-  return (
-    <Stack direction="row" sx={{ height: '100vh' }}>
-      
-      <Box sx={{ width: '16.67%', backgroundColor: '#003366' }}>
-        <Sidebar />
-      </Box>
-
-      
-      <Box sx={{ width: '83.33%' }}>
-        <Dashboard />
-      </Box>
-    </Stack>
-  );
-}
-
-export default App;*/

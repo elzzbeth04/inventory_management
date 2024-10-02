@@ -1,16 +1,27 @@
 import React, { useState } from 'react';
-import { List, ListItem, ListItemText, Avatar, Typography, Collapse } from '@mui/material';
-import { ExpandLess, ExpandMore } from '@mui/icons-material';
+import { List, Avatar, Typography, Box, Paper } from '@mui/material';
 import { Link } from 'react-router-dom';
-import { Box } from '@mui/material'; // Corrected to import from @mui/material
 
 const Sidebar = () => {
-  // State to manage the dropdown menu for 'User'
-  const [open, setOpen] = useState(false);
+  const [showProductOptions, setShowProductOptions] = useState(false);
+  const [showSupplierOptions, setShowSupplierOptions] = useState(false);
+  const [showPurchaseOrderOptions, setShowPurchaseOrderOptions] = useState(false);
+  const [showUserOptions, setShowUserOptions] = useState(false);
 
-  // Function to toggle the dropdown menu
-  const handleClick = () => {
-    setOpen(!open); // Toggle the 'open' state
+  const handleProductClick = () => {
+    setShowProductOptions(!showProductOptions);
+  };
+
+  const handleSupplierClick = () => {
+    setShowSupplierOptions(!showSupplierOptions);
+  };
+
+  const handlePurchaseOrderClick = () => {
+    setShowPurchaseOrderOptions(!showPurchaseOrderOptions);
+  };
+
+  const handleUserClick = () => {
+    setShowUserOptions(!showUserOptions);
   };
 
   return (
@@ -20,84 +31,206 @@ const Sidebar = () => {
       </Typography>
       <Avatar alt="John Doe" src="https://via.placeholder.com/150" />
       <Typography variant="body1" gutterBottom>John Doe</Typography>
-      
-      <List>
-        <ListItem button>
-          <ListItemText primary="Dashboard" sx={{ color: '#fff' }} />
-        </ListItem>
-        <ListItem button component={Link} to="/reports">
-           <ListItemText primary="Reports" sx={{ color: '#fff' }} />
-        </ListItem>
-        <ListItem button>
-          <ListItemText primary="Product" sx={{ color: '#fff' }} />
-        </ListItem>
-        <ListItem button>
-          <ListItemText primary="Supplier" sx={{ color: '#fff' }} />
-        </ListItem>
-        <ListItem button>
-          <ListItemText primary="Purchase Order" sx={{ color: '#fff' }} />
-        </ListItem>
 
-        {/* User Dropdown */}
-        <ListItem button onClick={handleClick}>
-          <ListItemText primary="User" sx={{ color: '#fff' }} />
-          {open ? <ExpandLess sx={{ color: '#fff' }} /> : <ExpandMore sx={{ color: '#fff' }} />}
-        </ListItem>
-        <Collapse in={open} timeout="auto" unmountOnExit>
-          <List component="div" disablePadding>
-            <ListItem button component={Link} to="/adduser">
-              <ListItemText primary="Add User" sx={{ color: '#fff', paddingLeft: '20px' }} />
-            </ListItem>
-            <ListItem button component={Link} to="/viewuser">
-              <ListItemText primary="View User" sx={{ color: '#fff', paddingLeft: '20px' }} />
-            </ListItem>
-          </List>
-        </Collapse>
+      <List sx={{ paddingTop: 2 }}>
+        <Link to="/" style={{ display: 'block', color: 'inherit', padding: '10px 0', textDecoration: 'none' }}>
+          <Box sx={{ padding: '10px 0', color: 'inherit' }}>Dashboard</Box>
+        </Link>
+
+        <Box 
+          onClick={handleProductClick} 
+          sx={{ display: 'block', color: 'inherit', padding: '10px 0', cursor: 'pointer' }}
+        >
+          <Typography>Product</Typography>
+        </Box>
+        
+        {showProductOptions && (
+          <Box sx={{ paddingLeft: 1, marginTop: '1px' }}>
+            <Paper
+              elevation={1}
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                padding: '5px',
+                marginBottom: '5px',
+                backgroundColor: '#003366',
+                color: '#fff',
+                cursor: 'pointer',
+                textDecoration: 'none',
+                '&:hover': { backgroundColor: '#0059b3', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)' }
+              }}
+              component={Link}
+              to="/addproduct"
+            >
+              <Typography>Add Product</Typography>
+            </Paper>
+            <Paper
+              elevation={1}
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                padding: '5px',
+                marginBottom: '5px',
+                backgroundColor: '#003366',
+                color: '#fff',
+                cursor: 'pointer',
+                textDecoration: 'none',
+                '&:hover': { backgroundColor: '#0059b3', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)' }
+              }}
+              component={Link}
+              to="/viewproduct"
+            >
+              <Typography>View Product</Typography>
+            </Paper>
+          </Box>
+        )}
+
+        <Box 
+          onClick={handleSupplierClick} 
+          sx={{ display: 'block', color: 'inherit', padding: '10px 0', cursor: 'pointer' }}
+        >
+          <Typography>Supplier</Typography>
+        </Box>
+
+        {showSupplierOptions && (
+          <Box sx={{ paddingLeft: 1, marginTop: '1px' }}>
+            <Paper
+              elevation={1}
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                padding: '5px',
+                marginBottom: '5px',
+                backgroundColor: '#003366',
+                color: '#fff',
+                cursor: 'pointer',
+                textDecoration: 'none',
+                '&:hover': { backgroundColor: '#0059b3', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)' }
+              }}
+              component={Link}
+              to="/create-suppliers"
+            >
+              <Typography>Add Supplier</Typography>
+            </Paper>
+            <Paper
+              elevation={1}
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                padding: '5px',
+                marginBottom: '5px',
+                backgroundColor: '#003366',
+                color: '#fff',
+                cursor: 'pointer',
+                textDecoration: 'none',
+                '&:hover': { backgroundColor: '#0059b3', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)' }
+              }}
+              component={Link}
+              to="/view-suppliers"
+            >
+              <Typography>View Supplier</Typography>
+            </Paper>
+          </Box>
+        )}
+
+        <Box 
+          onClick={handlePurchaseOrderClick} 
+          sx={{ display: 'block', color: 'inherit', padding: '10px 0', cursor: 'pointer' }}
+        >
+          <Typography>Purchase Order</Typography>
+        </Box>
+
+        {showPurchaseOrderOptions && (
+          <Box sx={{ paddingLeft: 1, marginTop: '1px' }}>
+            <Paper
+              elevation={1}
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                padding: '5px',
+                marginBottom: '5px',
+                backgroundColor: '#003366',
+                color: '#fff',
+                cursor: 'pointer',
+                textDecoration: 'none',
+                '&:hover': { backgroundColor: '#0059b3', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)' }
+              }}
+              component={Link}
+              to="/create-orders"
+            >
+              <Typography>Add Purchase Order</Typography>
+            </Paper>
+            <Paper
+              elevation={1}
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                padding: '5px',
+                marginBottom: '5px',
+                backgroundColor: '#003366',
+                color: '#fff',
+                cursor: 'pointer',
+                textDecoration: 'none',
+                '&:hover': { backgroundColor: '#0059b3', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)' }
+              }}
+              component={Link}
+              to="/view-orders"
+            >
+              <Typography>View Purchase Order</Typography>
+            </Paper>
+          </Box>
+        )}
+
+        <Box 
+          onClick={handleUserClick} 
+          sx={{ display: 'block', color: 'inherit', padding: '10px 0', cursor: 'pointer' }}
+        >
+          <Typography>User</Typography>
+        </Box>
+
+        {showUserOptions && (
+          <Box sx={{ paddingLeft: 1, marginTop: '1px' }}>
+            <Paper
+              elevation={1}
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                padding: '5px',
+                marginBottom: '5px',
+                backgroundColor: '#003366',
+                color: '#fff',
+                cursor: 'pointer',
+                textDecoration: 'none',
+                '&:hover': { backgroundColor: '#0059b3', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)' }
+              }}
+              component={Link}
+              to="/adduser"
+            >
+              <Typography>Add User</Typography>
+            </Paper>
+            <Paper
+              elevation={1}
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                padding: '5px',
+                marginBottom: '5px',
+                backgroundColor: '#003366',
+                color: '#fff',
+                cursor: 'pointer',
+                textDecoration: 'none',
+                '&:hover': { backgroundColor: '#0059b3', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)' }
+              }}
+              component={Link}
+              to="/viewuser"
+            >
+              <Typography>View User</Typography>
+            </Paper>
+          </Box>
+        )}
       </List>
     </Box>
   );
-}
+};
 
 export default Sidebar;
-
-
-
-/*import React from 'react';
-import { List, ListItem, ListItemText, Avatar, Typography } from '@mui/material';
-import { Box } from '@mui/system';
-
-const Sidebar = () => {
-  return (
-    <Box sx={{ backgroundColor: '#003366', height: '100vh', color: '#fff', padding: '20px' }}>
-      <Typography variant="h4" gutterBottom>
-        IMS
-      </Typography>
-      <Avatar alt="John Doe" src="https://via.placeholder.com/150" />
-      <Typography variant="body1" gutterBottom>John Doe</Typography>
-      
-      <List>
-        <ListItem button>
-          <ListItemText primary="Dashboard" />
-        </ListItem>
-        <ListItem button>
-          <ListItemText primary="Reports" />
-        </ListItem>
-        <ListItem button>
-          <ListItemText primary="Product" />
-        </ListItem>
-        <ListItem button>
-          <ListItemText primary="Supplier" />
-        </ListItem>
-        <ListItem button>
-          <ListItemText primary="Purchase Order" />
-        </ListItem>
-        <ListItem button>
-          <ListItemText primary="User" />
-        </ListItem>
-      </List>
-    </Box>
-  );
-}
-
-export default Sidebar;
-*/
