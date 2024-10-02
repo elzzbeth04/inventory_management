@@ -25,8 +25,8 @@ const Sidebar = () => {
         <ListItem button>
           <ListItemText primary="Dashboard" sx={{ color: '#fff' }} />
         </ListItem>
-        <ListItem button>
-          <ListItemText primary="Reports" sx={{ color: '#fff' }} />
+        <ListItem button component={Link} to="/reports">
+           <ListItemText primary="Reports" sx={{ color: '#fff' }} />
         </ListItem>
         <ListItem button>
           <ListItemText primary="Product" sx={{ color: '#fff' }} />
