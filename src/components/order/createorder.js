@@ -105,7 +105,7 @@ const CreateOrder = () => {
       {openSnackbar && (
         <div className="fixed top-0 left-1/2 transform -translate-x-1/2 mt-4 bg-green-500 text-white py-2 px-4 rounded-md shadow-md">
           Order Successfully Created!
-          <button onClick={handleCloseSnackbar} className="ml-4">X</button>
+          <button  onClick={handleCloseSnackbar} className="ml-4">X</button>
         </div>
       )}
     </div>
