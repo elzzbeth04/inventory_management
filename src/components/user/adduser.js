@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../../styles.css';
+
 
 const AddUser = () => {
   const [user, setUser] = useState({
