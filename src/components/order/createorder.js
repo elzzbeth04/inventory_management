@@ -3,16 +3,19 @@ import React, { useState } from 'react';
 const CreateOrder = () => {
   const [productName, setProductName] = useState('');
   const [quantity, setQuantity] = useState('');
+  const [supplierName, setSupplierName] = useState('');
   const [openSnackbar, setOpenSnackbar] = useState(false);
-  const supplierName = 'Johnson';
-  const productOptions = ['Nescafe', 'Kit Kat', 'Milo'];
+  
+  const productOptions = ['Neslte bru', 'Colgate Max Fresh', 'Yonex bat', 'Milton Flask', 'Nolta Casserole', 'Kitkat'];
+  const supplierOptions = ['AKJ Traders', 'JR Traders', 'PK Traders', 'Milton Suppliers', 'Nolta Suppliers', 'VStar Suppliers'];
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (!productName || !quantity) {
+    if (!productName || !quantity || !supplierName) {
       alert('Please fill all the fields.');
       return;
     }
+    
     const newOrder = {
       product: productName,
       quantity: quantity,
@@ -23,11 +26,12 @@ const CreateOrder = () => {
     
     setOpenSnackbar(true);
 
+    // Reset fields after submission
     setProductName('');
     setQuantity('');
+    setSupplierName('');
   };
 
-  // Function to close the Snackbar
   const handleCloseSnackbar = () => {
     setOpenSnackbar(false);
   };
@@ -37,6 +41,7 @@ const CreateOrder = () => {
       <h1 className="text-2xl font-bold mb-4">Create Order</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="flex flex-col md:flex-row gap-4">
+          
           {/* Product Name Select */}
           <div className="flex-1">
             <label className="block text-gray-700">Product Name</label>
@@ -69,10 +74,23 @@ const CreateOrder = () => {
           </div>
         </div>
 
-        {/* Supplier Name Display */}
-        <p className="text-gray-700 mt-4">
-          Supplier Name: <span className="font-semibold">{supplierName}</span>
-        </p>
+        {/* Supplier Name Select */}
+        <div className="flex-1">
+          <label className="block text-gray-700">Supplier Name</label>
+          <select
+            value={supplierName}
+            onChange={(e) => setSupplierName(e.target.value)}
+            required
+            className="w-full p-2 border rounded-md text-gray-400"
+          >
+            <option value="">Select a supplier</option>
+            {supplierOptions.map((supplier) => (
+              <option key={supplier} value={supplier}>
+                {supplier}
+              </option>
+            ))}
+          </select>
+        </div>
 
         {/* Submit Button */}
         <button
