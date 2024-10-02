@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
+import { supabase } from '../../../api/supabaseClient'; // Adjust path as needed
 
 const CreateSupplier = () => {
   // State variables to hold the input values
   const [supplierName, setSupplierName] = useState('');
   const [location, setLocation] = useState('');
   const [email, setEmail] = useState('');
+  const [loading, setLoading] = useState(false);
 
   // Function to handle form submission
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     // Check if all fields are filled
@@ -16,21 +18,32 @@ const CreateSupplier = () => {
       return;
     }
 
-    // Construct supplier object (replace this with your form submission logic)
+    // Construct supplier object
     const newSupplier = {
-      name: supplierName,
+      supplier_name: supplierName,
       location: location,
       email: email,
     };
 
-    // Example action: Show the entered supplier data in console
-    console.log('Supplier Created:', newSupplier);
+    setLoading(true);
 
-    setSupplierName('');
-    setLocation('');
-    setEmail('');
+    // Insert new supplier into the "suppliers" table in Supabase
+    const { data, error } = await supabase
+      .from('suppliers')
+      .insert([newSupplier]);
 
-    alert('Supplier Created Successfully');
+    setLoading(false);
+
+    if (error) {
+      console.error('Error inserting supplier:', error.message);
+      alert('Error adding supplier. Please try again.');
+    } else {
+      console.log('Supplier Created:', data);
+      setSupplierName('');
+      setLocation('');
+      setEmail('');
+      alert('Supplier Created Successfully');
+    }
   };
 
   return (
@@ -87,8 +100,9 @@ const CreateSupplier = () => {
           <button
             type="submit"
             className="w-full py-2 mt-4 bg-[#003366] text-white rounded-lg hover:bg-[#004080] focus:outline-none focus:ring-2 focus:ring-blue-500"
+            disabled={loading}
           >
-            Create Supplier
+            {loading ? 'Creating Supplier...' : 'Create Supplier'}
           </button>
         </form>
       </div>
