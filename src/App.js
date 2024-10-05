@@ -20,6 +20,7 @@ import UserManagement from './components/product/UserManagement ';
 const App = () => {
   return (
     <Router>
+<<<<<<< Updated upstream
     <Stack direction="row" sx={{ height: '100vh' }}>
       {/* Sidebar */}
       <Box sx={{ width: '16.67%', backgroundColor: '#003366' }}>
@@ -111,6 +112,28 @@ const App = () => {
       </Routes>
     </Stack>
   </Router>
+=======
+      {/* <UserManagement /> */}
+      <Stack direction="row" sx={{ height: '100vh' }}>
+        {/* Sidebar */}
+        <Box sx={{ width: '16.67%', backgroundColor: '#003366' }}>
+          <Sidebar />
+        </Box>
+
+        {/* Content area */}
+        <Box sx={{ width: '83.33%' }}>
+          <Routes>
+            <Route path="/" element={<Dashboard />} />
+            <Route path="/adduser" element={<AddUser />} />
+            <Route path="/viewuser" element={<ViewUser />} />
+            <Route path="/addproduct" element={<AddProduct />} />
+            <Route path="/viewproduct" element={<ViewProduct />} />
+            {/* Add other routes as necessary */}
+          </Routes>
+        </Box>
+      </Stack>
+    </Router>
+>>>>>>> Stashed changes
   );
 };
 

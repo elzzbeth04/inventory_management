@@ -17,7 +17,6 @@ const ViewUser = () => {
     setOpen(true);
   };
 
-  // Handle delete button click
   const handleDelete = (index) => {
     const updatedUsers = users.filter((_, i) => i !== index);
     setUsers(updatedUsers);
