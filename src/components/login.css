@@ -1,0 +1,90 @@
+body.login-page{
+    
+    background: url('../../public/images/login-image2.jpg') no-repeat center center;
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+}
+
+div.loginheader {
+    text-align: center;
+    position: relative;
+    margin: 50px auto 50px;
+}
+
+div.loginheader h1 {
+    font-size: 4vw; /*4rem*/
+    color: #92213d;
+    padding: 0px;
+    margin: 0px;
+    position: relative; /* Needed for the underline to position correctly */
+    display: inline-block;
+    text-transform: uppercase;
+    font-family: arial;
+}
+
+div.loginheader h1:after {
+    width: 100%;
+    margin: 0 auto;
+    display: block;
+    background: rgb(34, 118, 118);
+    height: 5px;
+    content: '';
+    margin-top: 1px; /* Space between heading and underline */
+}
+
+div.loginbody {
+    margin: 0 auto;
+    width: 90%;
+    max-width: 500px;
+    background: rgba(0, 0, 0, .5);
+    padding: 60px;
+    border: 2px solid #fff;
+    border-radius: 4px;
+}
+
+div.logininput {
+    margin-top: 2%;
+}
+
+div.logininput label {
+    display: block;
+    text-transform: uppercase;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #fff;
+}
+
+div.logininput input {
+    height: 2rem;
+    width: 100%;
+    max-width: 300px;
+    border: 2px solid #d40339;
+    font-size: 1rem;
+    padding: 0.5rem;
+    text-align: center;
+    font-style: italic;
+    box-sizing: border-box; /* Ensures padding doesn't affect width | Ensure padding and border are included in width */
+    min-width: -webkit-fill-available;
+}
+
+div.loginbutton {
+    margin-top: 10%;
+    text-align: center;
+}
+
+div.loginbutton button {
+    font-size: 1rem;
+    padding: 0.7rem 2rem;
+    background: #92213d;
+    border: none;
+    color: #fff;
+    width: 100%; /* Make button responsive */
+    max-width: 200px; /* Limit width for larger screens */
+    cursor: pointer;
+}
+
+body {
+    margin: 0;
+    font-size: 16px;
+}
