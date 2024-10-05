@@ -15,20 +15,30 @@ import Homepage from './components/Homepage';
 import LoginPage from './components/LoginPage';
 import './App.css';
 import './index.css';
-import UserManagement from './components/product/UserManagement '; 
+import Reports from './components/reports';
+
+// Layout Component for Authenticated Routes
+const AuthenticatedLayout = ({ children }) => (
+  <Stack direction="row" sx={{ height: '100vh' }}>
+    {/* Sidebar for Authenticated Routes */}
+    <Box sx={{ width: '16.67%', backgroundColor: '#003366' }}>
+      <Sidebar />
+    </Box>
+    <Box sx={{ width: '83.33%' }}>
+      {children}
+    </Box>
+  </Stack>
+);
 
 const App = () => {
   return (
     <Router>
-<<<<<<< Updated upstream
-    <Stack direction="row" sx={{ height: '100vh' }}>
-      {/* Sidebar */}
-      <Box sx={{ width: '16.67%', backgroundColor: '#003366' }}>
-        <Sidebar />
-      </Box>
-  
-      {/* Authenticated Routes */}
       <Routes>
+        {/* Public Routes */}
+        <Route path="/" element={<Homepage />} />
+        <Route path="/login" element={<LoginPage />} />
+
+        {/* Authenticated Routes (Wrapped with Sidebar Layout) */}
         <Route
           path="/dashboard"
           element={
@@ -110,30 +120,7 @@ const App = () => {
           }
         />
       </Routes>
-    </Stack>
-  </Router>
-=======
-      {/* <UserManagement /> */}
-      <Stack direction="row" sx={{ height: '100vh' }}>
-        {/* Sidebar */}
-        <Box sx={{ width: '16.67%', backgroundColor: '#003366' }}>
-          <Sidebar />
-        </Box>
-
-        {/* Content area */}
-        <Box sx={{ width: '83.33%' }}>
-          <Routes>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/adduser" element={<AddUser />} />
-            <Route path="/viewuser" element={<ViewUser />} />
-            <Route path="/addproduct" element={<AddProduct />} />
-            <Route path="/viewproduct" element={<ViewProduct />} />
-            {/* Add other routes as necessary */}
-          </Routes>
-        </Box>
-      </Stack>
     </Router>
->>>>>>> Stashed changes
   );
 };
 
