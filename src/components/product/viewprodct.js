@@ -95,6 +95,7 @@ const ViewUser = () => {
         <thead>
           <tr className="bg-[#003366] text-white">
             <th className="border border-gray-500 px-1 py-2 text-center">Product Name</th>
+            <th className="border border-gray-500 px-1 py-2 text-center">Qty</th>
             <th className="border border-gray-500 px-1 py-2 text-center">Supplier</th>
             <th className="border border-gray-500 px-1 py-2 text-center">Created At</th>
             <th className="border border-gray-500 px-1 py-2 text-center">Description</th>
@@ -110,6 +111,7 @@ const ViewUser = () => {
             return (
               <tr key={product.id} className="border-b"> {/* Use unique ID */}
                 <td className="border border-gray-500 px-1 py-2 text-center">{product.product_name}</td>
+                <td className="border border-gray-500 px-1 py-2 text-center">{product.quantity}</td>
                 <td className="border border-gray-500 px-1 py-2 text-center">{supplierDisplay}</td> {/* Display supplier name */}
                 <td className="border border-gray-500 px-1 py-2 text-center">{new Date(product.created_at).toLocaleString()}</td> {/* Format timestamp */}
                 <td className="border border-gray-500 px-1 py-2 text-center">{product.description}</td>
