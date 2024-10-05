@@ -33,7 +33,7 @@ const Sidebar = () => {
       <Typography variant="body1" gutterBottom>John Doe</Typography>
 
       <List sx={{ paddingTop: 2 }}>
-        <Link to="/" style={{ display: 'block', color: 'inherit', padding: '10px 0', textDecoration: 'none' }}>
+        <Link to="/dashboard" style={{ display: 'block', color: 'inherit', padding: '10px 0', textDecoration: 'none' }}>
           <Box sx={{ padding: '10px 0', color: 'inherit' }}>Dashboard</Box>
         </Link>
         <Link to="/reports" style={{ display: 'block', color: 'inherit', padding: '10px 0', textDecoration: 'none' }}>
