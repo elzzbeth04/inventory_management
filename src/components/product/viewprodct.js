@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField, MenuItem } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -6,36 +6,10 @@ import EditIcon from '@mui/icons-material/Edit';
 import { supabase } from '../../api/supabaseClient'; // Adjust the path according to your folder structure
 import '../../App.css';
 import '../../index.css';
-
-// **Suppliers array for mapping IDs to names**
-const suppliers = [
-  { id: 1, name: 'AKJ Traders' },
-  { id: 2, name: 'JR Traders' },
-  { id: 3, name: 'PK Traders' },
-  { id: 4, name: 'Milton Suppliers' },
-  { id: 5, name: 'Nolta Suppliers' },
-  { id: 6, name: 'VStar Suppliers' },
-];
-
 const ViewUser = () => {
   const [products, setProducts] = useState([]);
   const [open, setOpen] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState(null);
-
-  // Fetch products from Supabase
-  useEffect(() => {
-    const fetchProducts = async () => {
-      const { data, error } = await supabase.from('products').select('*');
-
-      if (error) {
-        console.error('Error fetching products:', error);
-      } else {
-        setProducts(data);
-      }
-    };
-
-    fetchProducts();
-  }, []);
+  const [selectedUser, setSelectedUser] = useState(null);
 
   // Handle edit button click
   const handleEditClick = (index) => {
@@ -44,53 +18,31 @@ const ViewUser = () => {
   };
 
   // Handle delete button click
-  const handleDelete = async (index) => {
-    const productToDelete = products[index];
-
-    const { error } = await supabase.from('products').delete().match({ id: productToDelete.id }); // Use your primary key
-
-    if (error) {
-      console.error('Error deleting product:', error);
-    } else {
-      const updatedProducts = products.filter((_, i) => i !== index);
-      setProducts(updatedProducts);
-    }
+  const handleDelete = (index) => {
+    const updatedUsers = users.filter((_, i) => i !== index);
+    setUsers(updatedUsers);
   };
 
   const handleClose = () => {
     setOpen(false);
-    setSelectedProduct(null);
+    setSelectedUser(null);
   };
 
-  const handleSave = async () => {
-    const updatedProducts = [...products];
-    const { error } = await supabase
-      .from('products')
-      .update({
-        product_name: selectedProduct.product_name, // Ensure this is the correct field
-        supplier_id: selectedProduct.supplier, // Ensure this is the correct field
-        quantity: selectedProduct.quantity,
-        description: selectedProduct.description,
-      })
-      .match({ id: selectedProduct.id }); // Use your primary key
-
-    if (error) {
-      console.error('Error updating product:', error);
-    } else {
-      updatedProducts[selectedProduct.index] = selectedProduct;
-      setProducts(updatedProducts);
-      handleClose();
-    }
+  const handleSave = () => {
+    const updatedUsers = [...users];
+    updatedUsers[selectedUser.index] = selectedUser;
+    setUsers(updatedUsers);
+    handleClose();
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setSelectedProduct({ ...selectedProduct, [name]: value });
+    setSelectedUser({ ...selectedUser, [name]: value });
   };
 
   return (
-    <div className="user-list-container p-8">
-      <h2 className="text-xl font-semibold mb-4">List of Products</h2>
+    <div className="user-list-container p-0">
+      <h2 className="text-xl font-semibold mb-0">List of Products</h2>
       <table className="min-w-full border border-gray-300 border-collapse">
         <thead>
           <tr className="bg-[#003366] text-white">

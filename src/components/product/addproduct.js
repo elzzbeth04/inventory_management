@@ -126,14 +126,15 @@ const AddUser = () => {
           <label className="block mb-2 font-bold">Description</label>
           <textarea
             name="description"
+          <textarea
+            name="description"
             value={user.description}
             onChange={handleChange}
             required
             className="w-full p-2 border border-gray-300 rounded"
           />
         </div>
-
-        {/* Submit Button */}
+        {/* Submit Button moved to the bottom of the form */}
         <button
           type="submit"
           className="w-full bg-[#003366] text-white py-3 rounded transition duration-300 ease-in-out hover:bg-[#0059b3]"
