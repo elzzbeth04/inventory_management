@@ -43,7 +43,7 @@ const Sidebar = () => {
       </Typography>
       <Avatar 
       alt={firstName} 
-      src={profile2} 
+      src={profile} 
       sx={{ marginLeft: '16px' }} // Add left margin using sx prop
     />
       {/* Display the dynamically fetched first name */}
