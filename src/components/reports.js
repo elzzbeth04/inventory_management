@@ -6,8 +6,6 @@ import '../index.css';
 import { jsPDF } from 'jspdf';
 
 const Reports = () => {
-
-    //fetching the data from supabase
     const fetchProductsData = async () => {
         const { data, error } = await supabase.from('products').select('*');
         if (error) {
@@ -16,44 +14,33 @@ const Reports = () => {
         }
         return data;
     };
+
     const fetchSuppliersData = async () => {
-        const { data, error } = await supabase.from('suppliers').select('*');
+        const { data, error } = await supabase
+            .from('suppliers')
+            .select(`
+                id,
+                supplier_name,
+                location,
+                email,
+                created_at,
+                products (product_name)
+            `);
+
         if (error) {
             console.error('Error fetching suppliers:', error);
             return [];
         }
-        return data;
-    };
 
-    //definig the functions
-    const generateExcelSuppliers = async () => {
-        const suppliers = await fetchSuppliersData();
-
-        const workbook = new ExcelJS.Workbook();
-        const worksheet = workbook.addWorksheet('Suppliers Report');
-
-        // Add headers
-        worksheet.columns = [
-            { header: 'Supplier Name', key: 'supplier_name', width: 20 },
-            { header: 'Location', key: 'location', width: 20 },
-            { header: 'Email', key: 'email', width: 30 },
-            { header: 'Created At', key: 'created_at', width: 20 },
-        ];
-
-        // Add rows with supplier data
-        suppliers.forEach((supplier) => {
-            worksheet.addRow({
-                supplier_name: supplier.supplier_name,
-                location: supplier.location,
-                email: supplier.email,
-                created_at: new Date(supplier.created_at).toLocaleString(),
-            });
-        });
-
-        // Generate the Excel file and download it
-        const buffer = await workbook.xlsx.writeBuffer();
-        const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-        saveAs(blob, 'suppliers_report.xlsx');
+        // Format the suppliers data
+        return data.map(supplier => ({
+            id: supplier.id,
+            supplier_name: supplier.supplier_name,
+            location: supplier.location,
+            email: supplier.email,
+            created_at: new Date(supplier.created_at).toLocaleString(),
+            products: supplier.products.map(product => product.product_name).join(', ') || 'No products available',
+        }));
     };
 
     const generateExcel = async () => {
@@ -87,6 +74,7 @@ const Reports = () => {
         const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
         saveAs(blob, 'products_report.xlsx');
     };
+
     const generatePDF = async () => {
         const products = await fetchProductsData();
 
@@ -126,46 +114,82 @@ const Reports = () => {
         // Save the PDF
         doc.save('products_report.pdf');
     };
-    // const generatesupplierPDF = async () => {
-    //     const suppliers = await fetchSuppliersData();
 
-    //     const doc = new jsPDF();
-    //     doc.setFontSize(10);
-    //     doc.text('Products Report', 20, 20);
+    const generateSuppliersExcel = async () => {
+        const suppliers = await fetchSuppliersData();
+
+        const workbook = new ExcelJS.Workbook();
+        const worksheet = workbook.addWorksheet('Suppliers Report');
+
+        // Add headers
+        worksheet.columns = [
+            { header: 'Supplier ID', key: 'id', width: 15 },
+            { header: 'Supplier Name', key: 'supplier_name', width: 20 },
+            { header: 'Location', key: 'location', width: 20 },
+            { header: 'Email', key: 'email', width: 30 },
+            { header: 'Products', key: 'products', width: 30 },
+            { header: 'Created At', key: 'created_at', width: 20 },
+        ];
+
+        // Add rows with supplier data
+        suppliers.forEach((supplier) => {
+            worksheet.addRow({
+                id: supplier.id,
+                supplier_name: supplier.supplier_name,
+                location: supplier.location,
+                email: supplier.email,
+                products: supplier.products,
+                created_at: supplier.created_at,
+            });
+        });
+
+        // Generate the Excel file and download it
+        const buffer = await workbook.xlsx.writeBuffer();
+        const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+        saveAs(blob, 'suppliers_report.xlsx');
+    };
+
+    const generateSuppliersPDF = async () => {
+        const suppliers = await fetchSuppliersData();
+
+        const doc = new jsPDF();
+        doc.setFontSize(10);
+        doc.text('Suppliers Report', 20, 20);
         
-    //     const headers = ['Supplier Name', 'Location', 'Email', 'Products', 'Created At'];
-    //     const data = suppliers.map((product) => [
-    //         product.product_name,
-    //         product.supplier_id,
-    //         product.quantity,
-    //         product.description,
-    //         new Date(product.created_at).toLocaleString(),
-    //     ]);
+        const headers = ['SID', 'Supplier Name', 'Location', 'Email', 'Products', 'Created At'];
+        const data = suppliers.map((supplier) => [
+            supplier.id,
+            supplier.supplier_name,
+            supplier.location,
+            supplier.email,
+            supplier.products,
+            supplier.created_at,
+        ]);
 
-    //     const tableColumnWidths = [50, 30, 20, 30, 50];
-    //     let startY = 40;
+        const tableColumnWidths = [10, 30, 30, 35, 38, 38];
+        let startY = 40;
+        let startX = 40;
 
-    //     // Add headers
-    //     headers.forEach((header, index) => {
-    //         const x = 20 + tableColumnWidths.slice(0, index).reduce((a, b) => a + b, 0);
-    //         doc.rect(x, startY - 10, tableColumnWidths[index], 10); // Draw header border
-    //         doc.text(header, x + 2, startY - 5); // Add header text
-    //     });
+        // Add headers
+        headers.forEach((header, index) => {
+            const x = 20 + tableColumnWidths.slice(0, index).reduce((a, b) => a + b, 0);
+            doc.rect(x, startY - 10, tableColumnWidths[index], 10); // Draw header border
+            doc.text(header, x + 2, startY - 5); // Add header text
+        });
     
-    //     // Add rows with borders
-    //     data.forEach((row) => {
-    //         startY += 10; // Move down for the next row
-    //         row.forEach((cell, index) => {
-    //             const x = 20 + tableColumnWidths.slice(0, index).reduce((a, b) => a + b, 0);
-    //             doc.rect(x, startY, tableColumnWidths[index], 10); // Draw cell border
-    //             doc.text(cell.toString(), x + 2, startY + 7); // Add cell text
-    //         });
-    //     });
+        // Add rows with borders
+        data.forEach((row) => {
+            startY += 10; // Move down for the next row
+            row.forEach((cell, index) => {
+                const x = 20 + tableColumnWidths.slice(0, index).reduce((a, b) => a + b, 0);
+                doc.rect(x, startY, tableColumnWidths[index], 10); // Draw cell border
+                doc.text(cell.toString(), x + 2, startY + 7); // Add cell text
+            });
+        });
 
-    //     // Save the PDF
-    //     doc.save('products_report.pdf');
-    // };
-
+        // Save the PDF
+        doc.save('suppliers_report.pdf');
+    };
 
     return (
         <div className="reports-container p-6">
@@ -190,8 +214,9 @@ const Reports = () => {
                     <p className="mb-4"> Suppliers Report</p>
                     <div className="btn-group flex justify-end">
                         <button className="excel-btn bg-blue-900 text-white px-4 py-2 rounded mr-2 hover:bg-blue-700"
-                        onClick={generateExcelSuppliers}>EXCEL</button>
-                        <button className="pdf-btn bg-blue-900 text-white px-4 py-2 rounded hover:bg-blue-700">PDF</button>
+                        onClick={generateSuppliersExcel}>EXCEL</button>
+                        <button className="pdf-btn bg-blue-900 text-white px-4 py-2 rounded hover:bg-blue-700"
+                        onClick={generateSuppliersPDF}>PDF</button>
                     </div>
                 </div>
             </div>
