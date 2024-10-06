@@ -35,7 +35,7 @@ const AddProduct = ({ onProductAdded }) => { // Added onProductAdded prop
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    console.log("Product Name:", product.productName);
     // Find the selected supplier
     const selectedSupplier = suppliers.find(supplier => supplier.id === parseInt(product.supplier));
 
@@ -87,23 +87,25 @@ const AddProduct = ({ onProductAdded }) => { // Added onProductAdded prop
       <form onSubmit={handleSubmit}>
         {/* Product Dropdown */}
         <div className="mb-5">
-          <label className="block mb-2 font-bold">Product Name</label>
-          <select
-            name="productName"
-            value={product.productName}
-            onChange={handleChange}
-            required
-            className="w-full p-2 border border-gray-300 rounded"
-          >
-            <option value="">Select Product</option>
-            <option value="Nestle">Nestle Bru</option>
-            <option value="Colgate">Colgate Max Fresh</option>
-            <option value="Yonex">Yonex Bat</option>
-            <option value="Milton">Milton Flask</option>
-            <option value="Nolta">Nolta Casserole</option>
-            <option value="VStar">Kitkat</option>
-          </select>
-        </div>
+  <label className="block mb-2 font-bold">Product Name</label>
+  <select
+    name="productName"
+    value={product.productName}
+    onChange={handleChange}
+    required
+    className="w-full p-2 border border-gray-300 rounded"
+  >
+    <option value="">Select Product</option>
+    {/* Set the full product name as the value */}
+    <option value="Nestle Bru">Nestle Bru</option>
+    <option value="Colgate Max Fresh">Colgate Max Fresh</option>
+    <option value="Yonex Bat">Yonex Bat</option>
+    <option value="Milton Flask">Milton Flask</option>
+    <option value="Nolta Casserole">Nolta Casserole</option>
+    <option value="Kitkat">Kitkat</option>
+  </select>
+</div>
+
 
         {/* Supplier Dropdown */}
         <div className="mb-5">
