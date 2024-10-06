@@ -105,13 +105,13 @@ const ViewProduct = () => {
           {products.map((product, index) => {
             // Find the supplier name using the supplier ID
             const supplier = suppliers.find((sup) => sup.id === product.supplier_id);
-            const supplierDisplay = supplier ? supplier.name : 'Unknown'; // Fallback for supplier
+            const supplierDisplay = supplier ? supplier.supplier_name : 'Unknown'; // Updated to supplier.supplier_name
 
             return (
               <tr key={product.id} className="border-b">
                 <td className="border border-gray-500 px-1 py-2 text-center">{product.product_name}</td>
                 <td className="border border-gray-500 px-1 py-2 text-center">{product.quantity}</td>
-                <td className="border border-gray-500 px-1 py-2 text-center">{supplierDisplay}</td>
+                <td className="border border-gray-500 px-1 py-2 text-center">{supplierDisplay}</td> {/* Corrected field */}
                 <td className="border border-gray-500 px-1 py-2 text-center">
                   {new Date(product.created_at).toLocaleString()}
                 </td>
@@ -163,7 +163,7 @@ const ViewProduct = () => {
           >
             {suppliers.map((supplier) => (
               <MenuItem key={supplier.id} value={supplier.id}>
-                {supplier.name}
+                {supplier.supplier_name} {/* Corrected field */}
               </MenuItem>
             ))}
           </TextField>
