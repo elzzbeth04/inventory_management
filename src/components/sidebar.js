@@ -1,12 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { List, Avatar, Typography, Box, Paper } from '@mui/material';
 import { Link } from 'react-router-dom';
 
 const Sidebar = () => {
+  const [firstName, setFirstName] = useState('');
+
+  // State for toggling dropdowns
   const [showProductOptions, setShowProductOptions] = useState(false);
   const [showSupplierOptions, setShowSupplierOptions] = useState(false);
   const [showPurchaseOrderOptions, setShowPurchaseOrderOptions] = useState(false);
   const [showUserOptions, setShowUserOptions] = useState(false);
+
+  // Fetch username from localStorage when the component mounts
+  useEffect(() => {
+    const storedFirstName = localStorage.getItem('username'); // Get the first name stored in localStorage
+    if (storedFirstName) {
+      setFirstName(storedFirstName); // Set the first name to state
+    }
+  }, []);
 
   const handleProductClick = () => {
     setShowProductOptions(!showProductOptions);
@@ -29,8 +40,9 @@ const Sidebar = () => {
       <Typography variant="h4" gutterBottom>
         IMS
       </Typography>
-      <Avatar alt="John Doe" src="https://via.placeholder.com/150" />
-      <Typography variant="body1" gutterBottom>John Doe</Typography>
+      <Avatar alt={firstName} src="https://via.placeholder.com/150" />
+      {/* Display the dynamically fetched first name */}
+      <Typography variant="body1" gutterBottom>{firstName || 'User'}</Typography>
 
       <List sx={{ paddingTop: 2 }}>
         <Link to="/dashboard" style={{ display: 'block', color: 'inherit', padding: '10px 0', textDecoration: 'none' }}>
@@ -39,13 +51,14 @@ const Sidebar = () => {
         <Link to="/reports" style={{ display: 'block', color: 'inherit', padding: '10px 0', textDecoration: 'none' }}>
           <Box sx={{ padding: '10px 0', color: 'inherit' }}>Reports</Box>
         </Link>
+
         <Box 
           onClick={handleProductClick} 
           sx={{ display: 'block', color: 'inherit', padding: '10px 0', cursor: 'pointer' }}
         >
           <Typography>Product</Typography>
         </Box>
-        
+
         {showProductOptions && (
           <Box sx={{ paddingLeft: 1, marginTop: '1px' }}>
             <Paper
@@ -87,6 +100,8 @@ const Sidebar = () => {
           </Box>
         )}
 
+        {/* Similar sections for Supplier, Purchase Order, and User */}
+        {/* Supplier Section */}
         <Box 
           onClick={handleSupplierClick} 
           sx={{ display: 'block', color: 'inherit', padding: '10px 0', cursor: 'pointer' }}
@@ -135,6 +150,7 @@ const Sidebar = () => {
           </Box>
         )}
 
+        {/* Purchase Order Section */}
         <Box 
           onClick={handlePurchaseOrderClick} 
           sx={{ display: 'block', color: 'inherit', padding: '10px 0', cursor: 'pointer' }}
@@ -183,6 +199,7 @@ const Sidebar = () => {
           </Box>
         )}
 
+        {/* User Section */}
         <Box 
           onClick={handleUserClick} 
           sx={{ display: 'block', color: 'inherit', padding: '10px 0', cursor: 'pointer' }}
@@ -224,7 +241,7 @@ const Sidebar = () => {
                 '&:hover': { backgroundColor: '#0059b3', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)' }
               }}
               component={Link}
-              to="/viewuser"
+              to="/viewusers"
             >
               <Typography>View User</Typography>
             </Paper>
