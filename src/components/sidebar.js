@@ -241,7 +241,7 @@ const Sidebar = () => {
                 '&:hover': { backgroundColor: '#0059b3', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)' }
               }}
               component={Link}
-              to="/viewuser"
+              to="/viewusers"
             >
               <Typography>View User</Typography>
             </Paper>
