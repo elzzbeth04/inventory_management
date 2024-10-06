@@ -10,7 +10,7 @@ const SupplierTable = ({ suppliers }) => {
             <th className="py-2 px-4 text-left">Location</th>
             <th className="py-2 px-4 text-left">Email</th>
             <th className="py-2 px-4 text-left">Products</th>
-            <th className="py-2 px-4 text-left">Created by</th>
+            
             <th className="py-2 px-4 text-left">Created At</th>
             <th className="py-2 px-4 text-left">Action</th>
           </tr>
@@ -25,7 +25,7 @@ const SupplierTable = ({ suppliers }) => {
                 {/* Display product names associated with the supplier */}
                 {supplier.products ? supplier.products.join(', ') : 'No products'}
               </td>
-              <td className="py-2 px-4">{supplier.createdby}</td>
+              
               <td className="py-2 px-4">
                 {new Date(supplier.created_at).toLocaleDateString()}
               </td>
