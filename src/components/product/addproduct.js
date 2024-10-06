@@ -1,33 +1,43 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { supabase } from '../../api/supabaseClient'; // Adjust the path according to your folder structure
 
-const AddUser = () => {
-  const [user, setUser] = useState({
+const AddProduct = ({ onProductAdded }) => { // Added onProductAdded prop
+  const [product, setProduct] = useState({
     productName: '',
     supplier: '',
     quantity: '',
     description: ''
   });
 
-  const suppliers = [
-    { id: 1, name: "AKJ Traders" },
-    { id: 2, name: "JR Traders" },
-    { id: 3, name: "PK Traders" },
-    { id: 4, name: "Milton Suppliers" },
-    { id: 5, name: "Nolta Suppliers" },
-    { id: 6, name: "VStar Suppliers" }
-  ];
+  const [suppliers, setSuppliers] = useState([]); // Fetch suppliers from DB
+
+  useEffect(() => {
+    const fetchSuppliers = async () => {
+      const { data, error } = await supabase
+        .from('suppliers')
+        .select('*');
+
+      if (error) {
+        console.error('Error fetching suppliers:', error);
+        alert('Failed to load suppliers. Please try again.');
+      } else {
+        setSuppliers(data);
+      }
+    };
+
+    fetchSuppliers();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setUser({ ...user, [name]: value });
+    setProduct({ ...product, [name]: value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Find the selected supplier
-    const selectedSupplier = suppliers.find(supplier => supplier.id === parseInt(user.supplier));
+    const selectedSupplier = suppliers.find(supplier => supplier.id === parseInt(product.supplier));
 
     // Check if the supplier exists
     if (!selectedSupplier) {
@@ -41,11 +51,10 @@ const AddUser = () => {
       .from('products') // Ensure this matches your table name
       .insert([
         {
-          product_name: user.productName, // Use the correct field names
+          product_name: product.productName, // Use the correct field names
           supplier_id: selectedSupplier.id, // Use supplier ID from selected supplier
-          supplier_name: selectedSupplier.name, // Use supplier name from selected supplier
-          quantity: parseInt(user.quantity), // Convert to integer
-          description: user.description,
+          quantity: parseInt(product.quantity), // Convert to integer
+          description: product.description,
         },
       ]);
 
@@ -57,12 +66,17 @@ const AddUser = () => {
       alert('Product added successfully!');
 
       // Reset the form
-      setUser({
+      setProduct({
         productName: '',
         supplier: '',
         quantity: '',
         description: ''
       });
+
+      // Notify parent component to update the product list
+      if (onProductAdded) {
+        onProductAdded();
+      }
     }
   };
 
@@ -76,7 +90,7 @@ const AddUser = () => {
           <label className="block mb-2 font-bold">Product Name</label>
           <select
             name="productName"
-            value={user.productName}
+            value={product.productName}
             onChange={handleChange}
             required
             className="w-full p-2 border border-gray-300 rounded"
@@ -84,7 +98,7 @@ const AddUser = () => {
             <option value="">Select Product</option>
             <option value="Nestle">Nestle Bru</option>
             <option value="Colgate">Colgate Max Fresh</option>
-            <option value="Yonex">Yonex bat</option>
+            <option value="Yonex">Yonex Bat</option>
             <option value="Milton">Milton Flask</option>
             <option value="Nolta">Nolta Casserole</option>
             <option value="VStar">Kitkat</option>
@@ -96,14 +110,14 @@ const AddUser = () => {
           <label className="block mb-2 font-bold">Supplier Name</label>
           <select
             name="supplier"
-            value={user.supplier}
+            value={product.supplier}
             onChange={handleChange}
             required
             className="w-full p-2 border border-gray-300 rounded"
           >
             <option value="">Select Supplier</option>
             {suppliers.map(supplier => (
-              <option key={supplier.id} value={supplier.id}>{supplier.name}</option>
+              <option key={supplier.id} value={supplier.id}>{supplier.supplier_name}</option>
             ))}
           </select>
         </div>
@@ -114,10 +128,11 @@ const AddUser = () => {
           <input
             type="number"
             name="quantity"
-            value={user.quantity}
+            value={product.quantity}
             onChange={handleChange}
             required
             className="w-full p-2 border border-gray-300 rounded"
+            min="1"
           />
         </div>
         
@@ -126,10 +141,11 @@ const AddUser = () => {
           <label className="block mb-2 font-bold">Description</label>
           <textarea
             name="description"
-            value={user.description}
+            value={product.description}
             onChange={handleChange}
             required
             className="w-full p-2 border border-gray-300 rounded"
+            rows="4"
           />
         </div>
 
@@ -145,4 +161,4 @@ const AddUser = () => {
   );
 };
 
-export default AddUser;
+export default AddProduct;
