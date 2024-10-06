@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import bcrypt from 'bcryptjs'; // Import bcrypt for password comparison
+ // Import bcrypt for password comparison
 import { supabase } from '../api/supabaseClient'; // Adjust the path based on your folder structure
 import './login.css'; // Include your CSS styles
 
 const LoginPage = () => {
-    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const navigate = useNavigate();
@@ -27,7 +27,7 @@ const LoginPage = () => {
         const { data: user, error } = await supabase
             .from('users')
             .select('*')
-            .eq('username', username) // Assuming username is the email
+            .eq('email', email) // Assuming username is the email
             .single();
 
         if (error) {
@@ -58,13 +58,13 @@ const LoginPage = () => {
             <div className="loginbody">
                 <form onSubmit={handleLogin}>
                     <div className="logininput">
-                        <label htmlFor="username">username</label> {/* Assuming username is the email */}
+                        <label htmlFor="username">EMAIL</label> {/* Assuming username is the email */}
                         <input 
-                            id="username" 
+                            id="email" 
                             placeholder="Enter your email" 
-                            type="text" // Changed to 'email'
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
+                            type="email" // Changed to 'email'
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
                         />
                     </div>
                     <br />
