@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { List, Avatar, Typography, Box, Paper } from '@mui/material';
 import { Link } from 'react-router-dom';
-
+import profile from '../assets/prfile.png'
+import profile2 from '../assets/pmic.png'
 const Sidebar = () => {
   const [firstName, setFirstName] = useState('');
 
@@ -36,20 +37,26 @@ const Sidebar = () => {
   };
 
   return (
-    <Box sx={{ backgroundColor: '#003366', height: '100vh', color: '#fff', padding: '20px' }}>
-      <Typography variant="h4" gutterBottom>
+    <Box sx={{ backgroundColor: '#003366', height: '100vh', color: '#fff', padding: '15px' }}>
+      <Typography variant="h4" gutterBottom sx={{ ml: 2 }}>
         IMS
       </Typography>
-      <Avatar alt={firstName} src="https://via.placeholder.com/150" />
+      <Avatar 
+      alt={firstName} 
+      src={profile2} 
+      sx={{ marginLeft: '16px' }} // Add left margin using sx prop
+    />
       {/* Display the dynamically fetched first name */}
-      <Typography variant="body1" gutterBottom>{firstName || 'User'}</Typography>
+      <Typography variant="body1" gutterBottom sx={{ ml: 2 }}>
+        {firstName || 'User'}
+      </Typography>
 
-      <List sx={{ paddingTop: 2 }}>
+      <List sx={{ paddingTop: 1 ,ml:2}}>
         <Link to="/dashboard" style={{ display: 'block', color: 'inherit', padding: '10px 0', textDecoration: 'none' }}>
-          <Box sx={{ padding: '10px 0', color: 'inherit' }}>Dashboard</Box>
+          <Box sx={{ padding: 'px 0', color: 'inherit' }}>Dashboard</Box>
         </Link>
         <Link to="/reports" style={{ display: 'block', color: 'inherit', padding: '10px 0', textDecoration: 'none' }}>
-          <Box sx={{ padding: '10px 0', color: 'inherit' }}>Reports</Box>
+          <Box sx={{ padding: 'px 0', color: 'inherit' }}>Reports</Box>
         </Link>
 
         <Box 
