@@ -5,11 +5,13 @@ import { faApple, faWindows, faAndroid } from '@fortawesome/free-brands-svg-icon
 import { faBox, faShoppingCart, faChartLine } from '@fortawesome/free-solid-svg-icons';
 import { faTwitter, faFacebook, faPinterest, faGooglePlus, faLinkedin, faYoutube } from '@fortawesome/free-brands-svg-icons';
 import './homepage.css'; // Import your CSS
-
+import logo from '../assets/logoims.jpg'
 const Homepage = () => {
   return (
     <div>
       <div className="header">
+      
+
       <Link to="/login">Login</Link>
       </div>
       <div className="banner">
