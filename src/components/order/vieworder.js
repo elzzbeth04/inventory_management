@@ -3,15 +3,8 @@ import { supabase } from '../../api/supabaseClient';
 
 const ViewOrder = () => {
   const [orders, setOrders] = useState([]);
-  const [newOrder, setNewOrder] = useState({
-    product: '',
-    quantity: '',
-    supplier: '',
-    status: 'Pending', 
-    ordered_by: '',
-    delivery_history: ''
-  });
 
+  // Fetch orders when the component mounts
   useEffect(() => {
     const fetchOrders = async () => {
       const { data, error } = await supabase
@@ -40,8 +33,8 @@ const ViewOrder = () => {
     // Update the status in the database
     const { error } = await supabase
       .from('purchase_orders')
-      .update({ status: newStatus }) // Update the status field in the database
-      .eq('id', orderId); // Specify which row to update using the order's ID
+      .update({ status: newStatus }) // Update the status in the database
+      .eq('id', orderId); // Target the specific order using its ID
 
     if (error) {
       console.error('Error updating status:', error);
@@ -50,25 +43,25 @@ const ViewOrder = () => {
     }
   };
 
-  const handleNewOrderChange = (e) => {
-    const { name, value } = e.target;
-    setNewOrder({ ...newOrder, [name]: value });
+  // Handle edit action (Implement your logic here)
+  const handleEdit = (orderId) => {
+    console.log('Editing order with ID:', orderId);
+    // Implement edit functionality based on your requirements
   };
 
-  const handleAddOrder = async () => {
-    const { data, error } = await supabase.from('purchase_orders').insert([newOrder]);
+  // Handle delete action
+  const handleDelete = async (orderId) => {
+    const { error } = await supabase
+      .from('purchase_orders')
+      .delete()
+      .eq('id', orderId); // Delete the specific order by ID
+
     if (error) {
-      console.error('Error adding new order:', error);
+      console.error('Error deleting order:', error);
     } else {
-      setOrders([...orders, data[0]]); // Add the new order to the existing list
-      setNewOrder({
-        product: '',
-        quantity: '',
-        supplier: '',
-        status: 'Pending', // Reset to default
-        ordered_by: '',
-        delivery_history: ''
-      });
+      // Remove the deleted order from the state
+      setOrders(orders.filter(order => order.id !== orderId));
+      console.log('Order deleted with ID:', orderId);
     }
   };
 
@@ -87,6 +80,7 @@ const ViewOrder = () => {
               <th className="py-2 px-4">Ordered By</th>
               <th className="py-2 px-4">Created Date</th>
               <th className="py-2 px-4">Delivery History</th>
+              <th className="py-2 px-4">Actions</th> {/* Added actions column */}
             </tr>
           </thead>
           <tbody>
@@ -109,6 +103,20 @@ const ViewOrder = () => {
                 <td className="py-2 px-4">{order.ordered_by}</td>
                 <td className="py-2 px-4">{new Date(order.created_date).toLocaleDateString()}</td>
                 <td className="py-2 px-4">{order.delivery_history}</td>
+                <td className="py-2 px-4">
+                  <button
+                    onClick={() => handleEdit(order.id)}
+                    className="bg-[#003366] hover:bg-[#004080] text-white py-1 px-3 rounded text-xs"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    onClick={() => handleDelete(order.id)}
+                    className="bg-[#003366] hover:bg-[#004080] text-white py-1 px-3 rounded text-xs ml-2"
+                  >
+                    Delete
+                  </button>
+                </td>
               </tr>
             ))}
           </tbody>
