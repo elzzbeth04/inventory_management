@@ -1,14 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { supabase } from '../../api/supabaseClient';  
 
 const CreateOrder = () => {
   const [productName, setProductName] = useState('');
   const [quantity, setQuantity] = useState('');
   const [supplierName, setSupplierName] = useState('');
+  const [supplierOptions, setSupplierOptions] = useState([]);
   const [openSnackbar, setOpenSnackbar] = useState(false);
-  
+
   const productOptions = ['Neslte bru', 'Colgate Max Fresh', 'Yonex bat', 'Milton Flask', 'Nolta Casserole', 'Kitkat'];
-  const supplierOptions = ['AKJ Traders', 'JR Traders', 'PK Traders', 'Milton Suppliers', 'Nolta Suppliers', 'VStar Suppliers'];
+
+  // Fetch suppliers from Supabase
+  const fetchSuppliers = async () => {
+    const { data, error } = await supabase
+      .from('suppliers')
+      .select('supplier_name');
+    
+    if (error) {
+      console.error('Error fetching suppliers:', error.message);
+    } else {
+      setSupplierOptions(data.map(supplier => supplier.supplier_name));
+    }
+  };
+
+  useEffect(() => {
+    // Fetch supplier options when component mounts
+    fetchSuppliers();
+  }, []);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -21,12 +39,11 @@ const CreateOrder = () => {
       product: productName,
       quantity: parseInt(quantity),
       supplier: supplierName,
-      status: 'Pending',  // Default status
-      ordered_by: 'User A',  // Replace with dynamic user data
-      delivery_history: 'Pending',  // Can be updated later
+      status: 'Pending',  
+      ordered_by: 'User A',  
+      delivery_history: 'Pending',  
     };
 
-    // Save the order to Supabase
     const { data, error } = await supabase
       .from('purchase_orders')
       .insert([newOrder]);
@@ -39,7 +56,6 @@ const CreateOrder = () => {
       setOpenSnackbar(true);
     }
 
-    // Reset fields after submission
     setProductName('');
     setQuantity('');
     setSupplierName('');
@@ -104,20 +120,15 @@ const CreateOrder = () => {
           </select>
         </div>
 
-        {/* Submit Button */}
-        <button
-          type="submit"
-          className="w-full bg-blue-900 text-white py-2 rounded-md hover:bg-blue-800"
-        >
+        <button type="submit" className="w-full bg-blue-900 text-white py-2 rounded-md hover:bg-blue-800">
           Create Order
         </button>
       </form>
 
-      {/* Snackbar */}
       {openSnackbar && (
         <div className="fixed top-0 left-1/2 transform -translate-x-1/2 mt-4 bg-green-500 text-white py-2 px-4 rounded-md shadow-md">
           Order Successfully Created!
-          <button  onClick={handleCloseSnackbar} className="ml-4">X</button>
+          <button onClick={handleCloseSnackbar} className="ml-4">X</button>
         </div>
       )}
     </div>
@@ -125,6 +136,7 @@ const CreateOrder = () => {
 };
 
 export default CreateOrder;
+
 
 /*import React, { useState } from 'react';
 
