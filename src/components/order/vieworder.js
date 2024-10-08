@@ -43,7 +43,7 @@ const ViewOrder = () => {
     }
   };
 
-  // Handle edit action (Implement your logic here)
+  // Handle edit action 
   const handleEdit = (orderId) => {
     console.log('Editing order with ID:', orderId);
     // Implement edit functionality based on your requirements
