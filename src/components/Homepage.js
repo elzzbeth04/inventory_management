@@ -5,25 +5,20 @@ import { faApple, faWindows, faAndroid } from '@fortawesome/free-brands-svg-icon
 import { faBox, faShoppingCart, faChartLine } from '@fortawesome/free-solid-svg-icons';
 import { faTwitter, faFacebook, faPinterest, faGooglePlus, faLinkedin, faYoutube } from '@fortawesome/free-brands-svg-icons';
 import './homepage.css'; // Import your CSS
-import logo from '../assets/logoims.jpg'
+
 const Homepage = () => {
   return (
     <div>
-      <div className="header">
       
-
-      <Link to="/login">Login</Link>
-      </div>
       <div className="banner">
+      <Link to="/login">Login</Link>
         <div className="homepgcontainer1">
           <div className="bannerheader">
-            <h1>IMS</h1>
+            <h1 >IMS</h1>
             <h3>Inventory Management System</h3>
           </div>
           <p className="bannerpara">
-            Monitor stock levels, track purchases, and streamline order management in one centralized system.
-            <br />
-            Gain full visibility of your inventory from suppliers to customers.
+            
           </p>
           <div className="bannericons">
             <div className="icon-circle">
