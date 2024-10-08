@@ -47,7 +47,20 @@ const Sidebar = () => {
   const isSelected = (option) => selectedOption === option;
 
   return (
-    <Box sx={{ backgroundColor: '#003366', height: '100vh', color: '#fff', padding: '20px', overflowY: 'auto' }}>
+      <Box 
+        sx={{ 
+          backgroundColor: '#003366', 
+          minHeight: '100vh',  // Ensures it stretches with the dashboard content
+          width: '250px',      // Fixed width for the sidebar
+          color: '#fff', 
+          padding: '20px', 
+          position: 'fixed',   // Sticks the sidebar to the left
+          top: 0,              // Ensures it starts from the top
+          left: 0,             // Keeps it aligned to the left
+          overflowY: 'auto' 
+        }}
+      >
+    
       <Typography variant="h4" gutterBottom>
         IMS
       </Typography>
