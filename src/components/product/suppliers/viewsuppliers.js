@@ -44,14 +44,14 @@ const ViewSuppliers = () => {
         <p>Loading suppliers...</p>
       ) : (
         <table className="min-w-full bg-white border border-gray-200">
-          <thead>
+          <thead style={{ backgroundColor: '#003366', color: 'white' }}>
             <tr>
-              <th className="py-2 px-4 border-b">Supplier ID</th>
-              <th className="py-2 px-4 border-b">Supplier Name</th>
-              <th className="py-2 px-4 border-b">Location</th>
-              <th className="py-2 px-4 border-b">Email</th>
-              <th className="py-2 px-4 border-b">Products</th>
-              <th className="py-2 px-4 border-b">Created At</th>
+              <th className="py-2 px-4 border-b text-left">Supplier ID</th>
+              <th className="py-2 px-4 border-b text-left">Supplier Name</th>
+              <th className="py-2 px-4 border-b text-left">Location</th>
+              <th className="py-2 px-4 border-b text-left">Email</th>
+              <th className="py-2 px-4 border-b text-left">Products</th>
+              <th className="py-2 px-4 border-b text-left">Created At</th>
             </tr>
           </thead>
           <tbody>
@@ -62,7 +62,7 @@ const ViewSuppliers = () => {
             ) : (
               suppliers.map((supplier) => (
                 <tr key={supplier.id}>
-                  <td className="py-2 px-4 border-b">{supplier.id}</td>
+                  <td className="py-2 px-4 border-b">{supplier.id}</td> {/* Extra padding added */}
                   <td className="py-2 px-4 border-b">{supplier.supplier_name}</td>
                   <td className="py-2 px-4 border-b">{supplier.location}</td>
                   <td className="py-2 px-4 border-b">{supplier.email}</td>

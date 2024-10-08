@@ -47,7 +47,7 @@ const Sidebar = () => {
   const isSelected = (option) => selectedOption === option;
 
   return (
-    <Box sx={{ backgroundColor: '#003366', height: '100vh', color: '#fff', padding: '20px', overflowY: 'auto' }}>
+    <Box sx={{ backgroundColor: '#003366', height: '120vh', color: '#fff', padding: '20px', overflowY: 'auto' }}>
       <Typography variant="h4" gutterBottom>
         IMS
       </Typography>
@@ -238,17 +238,17 @@ const Sidebar = () => {
                 alignItems: 'center',
                 padding: '5px',
                 marginBottom: '5px',
-                backgroundColor: isSelected('add-user') ? '#A9A9A9' : '#003366',
+                backgroundColor: isSelected('create-user') ? '#A9A9A9' : '#003366',
                 color: '#fff',
                 cursor: 'pointer',
                 textDecoration: 'none',
                 '&:hover': { backgroundColor: '#A9A9A9' }
               }}
               component={Link}
-              to="/adduser"
-              onClick={() => handleOptionSelect('add-user')}
+              to="/create-user"
+              onClick={() => handleOptionSelect('create-user')}
             >
-              <Typography>Add User</Typography>
+              <Typography>Create User</Typography>
             </Paper>
             <Paper
               elevation={1}
@@ -264,7 +264,7 @@ const Sidebar = () => {
                 '&:hover': { backgroundColor: '#A9A9A9' }
               }}
               component={Link}
-              to="/viewusers"
+              to="/viewuser"
               onClick={() => handleOptionSelect('view-user')}
             >
               <Typography>View User</Typography>
