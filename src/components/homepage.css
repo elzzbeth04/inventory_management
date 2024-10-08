@@ -2,25 +2,28 @@ body{
     margin:0;
     font-size: 16px;
     overflow-x: hidden; /* Prevent horizontal scrolling */
-    /*font-family: Arial;*/
+    font-family: Arial;
 }
 
-div.header{
-    width:100%;
-    background:black;
-    padding: 20px 0px;
-    text-align: right;
-}
-div.header a{
-    font-size:18px;
-    color:#fff;
+
+div.banner a {
+    position: absolute; /* Position the button absolutely */
+    top: 25px; /* Adjust position from the top */
+    right: 20px; /* Align it to the rightmost side */
+    font-size: 15px;
+    font-weight: 700;
+    color: rgb(245, 242, 242); /* Button text color */
     text-decoration: none;
-    background-color:darkgrey;
-    border-radius: 5px;
-    padding: 15px 30px; /* Increase padding for more space around the text */
+    background-color: rgba(93, 83, 83, 0.91); /* Background for the button */
+    border-radius: 20px;
+    border: #e3e3e3;
+    padding: 10px 25px; /* Padding around the button text */
     display: inline-block;
-    margin-right: 20px;
-    transition: background 0.3s ease;
+    transition: background 0.3s ease; /* Smooth transition for hover */
+}
+
+div.banner a:hover {
+    background-color: darkgrey; /* Change background color on hover */
 }
    
 
@@ -337,7 +340,7 @@ div.footer{
 
 div.footer a{
     color:black;
-    /*color:#848499;*/
+    color: #848499;
     margin-left: 1.5rem;
     text-decoration: none;
     padding: 5px 0; /* Add vertical padding for height consistency */
