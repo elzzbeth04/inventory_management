@@ -2,41 +2,52 @@ import React, { useState, useEffect } from 'react';
 import { supabase } from '../../api/supabaseClient';  
 
 const CreateOrder = () => {
-  const [productName, setProductName] = useState('');
+  const [productId, setProductId] = useState(''); // Store product_id instead of productName
   const [quantity, setQuantity] = useState('');
   const [supplierName, setSupplierName] = useState('');
   const [supplierOptions, setSupplierOptions] = useState([]);
+  const [productOptions, setProductOptions] = useState([]); // Fetch product options from the DB
   const [openSnackbar, setOpenSnackbar] = useState(false);
 
-  const productOptions = ['Neslte bru', 'Colgate Max Fresh', 'Yonex bat', 'Milton Flask', 'Nolta Casserole', 'Kitkat'];
-
-  // Fetch suppliers from Supabase
-  const fetchSuppliers = async () => {
-    const { data, error } = await supabase
+  // Fetch suppliers and products from Supabase
+  const fetchSuppliersAndProducts = async () => {
+    // Fetch suppliers
+    const { data: suppliers, error: supplierError } = await supabase
       .from('suppliers')
       .select('supplier_name');
     
-    if (error) {
-      console.error('Error fetching suppliers:', error.message);
+    if (supplierError) {
+      console.error('Error fetching suppliers:', supplierError.message);
     } else {
-      setSupplierOptions(data.map(supplier => supplier.supplier_name));
+      setSupplierOptions(suppliers.map(supplier => supplier.supplier_name));
+    }
+
+    // Fetch products
+    const { data: products, error: productError } = await supabase
+      .from('products')
+      .select('id, product_name');
+    
+    if (productError) {
+      console.error('Error fetching products:', productError.message);
+    } else {
+      setProductOptions(products); // Set the product options for the dropdown
     }
   };
 
   useEffect(() => {
-    // Fetch supplier options when component mounts
-    fetchSuppliers();
+    // Fetch supplier and product options when component mounts
+    fetchSuppliersAndProducts();
   }, []);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (!productName || !quantity || !supplierName) {
+    if (!productId || !quantity || !supplierName) {
       alert('Please fill all the fields.');
       return;
     }
 
     const newOrder = {
-      product: productName,
+      product_id: productId,  // Store the product_id instead of product name
       quantity: parseInt(quantity),
       supplier: supplierName,
       status: 'Pending',  
@@ -56,7 +67,7 @@ const CreateOrder = () => {
       setOpenSnackbar(true);
     }
 
-    setProductName('');
+    setProductId('');
     setQuantity('');
     setSupplierName('');
   };
@@ -74,15 +85,15 @@ const CreateOrder = () => {
           <div className="flex-1">
             <label className="block text-gray-700">Product Name</label>
             <select
-              value={productName}
-              onChange={(e) => setProductName(e.target.value)}
+              value={productId}
+              onChange={(e) => setProductId(e.target.value)}
               required
               className="w-full p-2 border rounded-md text-gray-400"
             >
               <option value="">Select a product</option>
               {productOptions.map((product) => (
-                <option key={product} value={product}>
-                  {product}
+                <option key={product.id} value={product.id}>
+                  {product.product_name}
                 </option>
               ))}
             </select>
@@ -136,6 +147,7 @@ const CreateOrder = () => {
 };
 
 export default CreateOrder;
+
 
 
 /*import React, { useState } from 'react';
