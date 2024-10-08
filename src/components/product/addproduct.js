@@ -98,7 +98,7 @@ const AddProduct = ({ onProductAdded }) => { // Added onProductAdded prop
               value={product.productName}
               onChange={handleChange}
               required
-              placeholder="Enter Product Name"
+             placeholder="Enter supplier name"
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
             />
           </div>
@@ -114,6 +114,7 @@ const AddProduct = ({ onProductAdded }) => { // Added onProductAdded prop
               value={product.supplier}
               onChange={handleChange}
               required
+              placeholder="Enter supplier name"
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
             >
               <option value="">Select Supplier</option>
@@ -137,6 +138,7 @@ const AddProduct = ({ onProductAdded }) => { // Added onProductAdded prop
               value={product.quantity}
               onChange={handleChange}
               required
+              placeholder="Enter Quantity"
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
               min="1"
             />
@@ -153,6 +155,7 @@ const AddProduct = ({ onProductAdded }) => { // Added onProductAdded prop
               value={product.description}
               onChange={handleChange}
               required
+              placeholder="Enter Descreption"
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
               rows="4"
             />

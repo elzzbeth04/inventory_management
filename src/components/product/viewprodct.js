@@ -125,7 +125,7 @@ const ViewProduct = () => {
                       size="small"
                       onClick={() => handleDelete(index)}
                     >
-                      <DeleteIcon fontSize="small" style={{ color: 'red' }} />
+                      <DeleteIcon fontSize="small" style={{ color: '#003366' }} />
                     </IconButton>
                     <IconButton
                       color="primary"
@@ -133,7 +133,7 @@ const ViewProduct = () => {
                       size="small"
                       onClick={() => handleEditClick(index)}
                     >
-                      <EditIcon fontSize="small" style={{ color: 'grey' }} />
+                      <EditIcon fontSize="small" style={{ color: '#003366'}} />
                     </IconButton>
                   </td>
                 </tr>

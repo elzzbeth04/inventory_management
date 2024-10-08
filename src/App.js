@@ -64,7 +64,7 @@ const App = () => {
           }
         />
         <Route
-          path="/viewuser"
+          path="/view-user"
           element={
             <AuthenticatedLayout>
               <ViewUser />
