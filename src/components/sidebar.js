@@ -258,7 +258,7 @@ const Sidebar = () => {
                 '&:hover': { backgroundColor: '#A9A9A9' }
               }}
               component={Link}
-              to="/create-user"
+              to="/adduser"
               onClick={() => handleOptionSelect('create-user')}
             >
               <Typography>Create User</Typography>

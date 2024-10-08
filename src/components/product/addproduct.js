@@ -81,84 +81,92 @@ const AddProduct = ({ onProductAdded }) => { // Added onProductAdded prop
   };
 
   return (
-    <div className="bg-gray-200 p-5 rounded-lg max-w-lg mx-auto mt-12">
-      <h2 className="text-xl font-bold mb-5">+ Create Product</h2>
-
-      <form onSubmit={handleSubmit}>
-        {/* Product Dropdown */}
-        <div className="mb-5">
-  <label className="block mb-2 font-bold">Product Name</label>
-  <select
-    name="productName"
-    value={product.productName}
-    onChange={handleChange}
-    required
-    className="w-full p-2 border border-gray-300 rounded"
-  >
-    <option value="">Select Product</option>
-    {/* Set the full product name as the value */}
-    <option value="Nestle Bru">Nestle Bru</option>
-    <option value="Colgate Max Fresh">Colgate Max Fresh</option>
-    <option value="Yonex Bat">Yonex Bat</option>
-    <option value="Milton Flask">Milton Flask</option>
-    <option value="Nolta Casserole">Nolta Casserole</option>
-    <option value="Kitkat">Kitkat</option>
-  </select>
-</div>
-
-
-        {/* Supplier Dropdown */}
-        <div className="mb-5">
-          <label className="block mb-2 font-bold">Supplier Name</label>
-          <select
-            name="supplier"
-            value={product.supplier}
-            onChange={handleChange}
-            required
-            className="w-full p-2 border border-gray-300 rounded"
+    <div className="flex justify-center items-center min-h-screen"> {/* Centering container */}
+      <div className="bg-white shadow-md rounded-lg w-full max-w-lg p-5"> {/* Added padding here */}
+        <h2 className="text-xl font-bold mb-5"> Create Product</h2>
+    
+        <form onSubmit={handleSubmit}>
+          {/* Product Name Input */}
+          <div className="mb-5">
+            <label className="block text-gray-700 text-sm mb-2 font-bold" htmlFor="productName">
+              Product Name
+            </label>
+            <input
+              type="text"
+              id="productName"
+              name="productName"
+              value={product.productName}
+              onChange={handleChange}
+              required
+              placeholder="Enter Product Name"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+            />
+          </div>
+      
+          {/* Supplier Dropdown */}
+          <div className="mb-5">
+            <label className="block text-gray-700 text-sm mb-2 font-bold" htmlFor="supplier">
+              Supplier Name
+            </label>
+            <select
+              id="supplier"
+              name="supplier"
+              value={product.supplier}
+              onChange={handleChange}
+              required
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+            >
+              <option value="">Select Supplier</option>
+              {suppliers.map((supplier) => (
+                <option key={supplier.id} value={supplier.id}>
+                  {supplier.supplier_name}
+                </option>
+              ))}
+            </select>
+          </div>
+      
+          {/* Quantity Input */}
+          <div className="mb-5">
+            <label className="block text-gray-700 text-sm mb-2 font-bold" htmlFor="quantity">
+              Quantity
+            </label>
+            <input
+              type="number"
+              id="quantity"
+              name="quantity"
+              value={product.quantity}
+              onChange={handleChange}
+              required
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+              min="1"
+            />
+          </div>
+      
+          {/* Description Input */}
+          <div className="mb-5">
+            <label className="block text-gray-700 text-sm mb-2 font-bold" htmlFor="description">
+              Description
+            </label>
+            <textarea
+              id="description"
+              name="description"
+              value={product.description}
+              onChange={handleChange}
+              required
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+              rows="4"
+            />
+          </div>
+      
+          {/* Submit Button */}
+          <button
+            type="submit"
+            className="w-full py-2 mt-4 bg-[#003366] text-white rounded-lg hover:bg-[#004080] focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300 ease-in-out"
           >
-            <option value="">Select Supplier</option>
-            {suppliers.map(supplier => (
-              <option key={supplier.id} value={supplier.id}>{supplier.supplier_name}</option>
-            ))}
-          </select>
-        </div>
-
-        {/* Quantity Input */}
-        <div className="mb-5">
-          <label className="block mb-2 font-bold">Quantity</label>
-          <input
-            type="number"
-            name="quantity"
-            value={product.quantity}
-            onChange={handleChange}
-            required
-            className="w-full p-2 border border-gray-300 rounded"
-            min="1"
-          />
-        </div>
-        
-        {/* Description Input */}
-        <div className="mb-5">
-          <label className="block mb-2 font-bold">Description</label>
-          <textarea
-            name="description"
-            value={product.description}
-            onChange={handleChange}
-            required
-            className="w-full p-2 border border-gray-300 rounded"
-            rows="4"
-          />
-        </div>
-
-        {/* Submit Button */}
-        <button
-          type="submit"
-          className="w-full bg-[#003366] text-white py-3 rounded transition duration-300 ease-in-out hover:bg-[#0059b3]"
-        >
-          + Add Product
-        </button>
-      </form>
+            + Add Product
+          </button>
+        </form>
+      </div>
     </div>
   );
 };

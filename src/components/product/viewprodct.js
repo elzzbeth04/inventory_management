@@ -88,57 +88,60 @@ const ViewProduct = () => {
   };
 
   return (
-    <div className="product-list-container p-0">
-      <h2 className="text-xl font-semibold mb-0">List of Products</h2>
-      <table className="min-w-full border border-gray-300 border-collapse">
-        <thead>
-          <tr className="bg-[#003366] text-white">
-            <th className="border border-gray-500 px-1 py-2 text-center">Product Name</th>
-            <th className="border border-gray-500 px-1 py-2 text-center">Qty</th>
-            <th className="border border-gray-500 px-1 py-2 text-center">Supplier</th>
-            <th className="border border-gray-500 px-1 py-2 text-center">Created At</th>
-            <th className="border border-gray-500 px-1 py-2 text-center">Description</th>
-            <th className="border border-gray-500 px-1 py-2 text-center">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {products.map((product, index) => {
-            // Find the supplier name using the supplier ID
-            const supplier = suppliers.find((sup) => sup.id === product.supplier_id);
-            const supplierDisplay = supplier ? supplier.supplier_name : 'Unknown'; // Updated to supplier.supplier_name
+    <div className="p-5 bg-gray-100">
+      <h2 className="text-xl font-semibold mb-4 ml-4">List of Products</h2>
+      <div className="overflow-x-auto bg-white shadow-md rounded-lg ml-4">
+        <table className="min-w-full">
+          <thead >
+            <tr className="bg-[#003366] text-white">
+            <th className="py-2 px-4 border-b text-left ">Product Name</th>
 
-            return (
-              <tr key={product.id} className="border-b">
-                <td className="border border-gray-500 px-1 py-2 text-center">{product.product_name}</td>
-                <td className="border border-gray-500 px-1 py-2 text-center">{product.quantity}</td>
-                <td className="border border-gray-500 px-1 py-2 text-center">{supplierDisplay}</td> {/* Corrected field */}
-                <td className="border border-gray-500 px-1 py-2 text-center">
-                  {new Date(product.created_at).toLocaleString()}
-                </td>
-                <td className="border border-gray-500 px-1 py-2 text-center">{product.description}</td>
-                <td className="border border-gray-500 px-1 py-2 text-center">
-                  <IconButton
-                    color="primary"
-                    aria-label="delete"
-                    size="small"
-                    onClick={() => handleDelete(index)}
-                  >
-                    <DeleteIcon fontSize="small" style={{ color: 'red' }} />
-                  </IconButton>
-                  <IconButton
-                    color="primary"
-                    aria-label="edit"
-                    size="small"
-                    onClick={() => handleEditClick(index)}
-                  >
-                    <EditIcon fontSize="small" style={{ color: 'grey' }} />
-                  </IconButton>
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+              <th className="py-2 px-4 border-b text-left">Qty</th>
+              <th className="py-2 px-4 border-b text-left">Supplier</th>
+              <th className="py-2 px-4 border-b text-left">Created At</th>
+              <th className="py-2 px-4 border-b text-left">Description</th>
+              <th className="py-2 px-4 border-b text-left">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {products.map((product, index) => {
+              // Find the supplier name using the supplier ID
+              const supplier = suppliers.find((sup) => sup.id === product.supplier_id);
+              const supplierDisplay = supplier ? supplier.supplier_name : 'Unknown';
+
+              return (
+                <tr key={product.id} className="border-b hover:bg-gray-50">
+                  <td className="py-2 px-4">{product.product_name}</td>
+                  <td className="py-2 px-4">{product.quantity}</td>
+                  <td className="py-2 px-4">{supplierDisplay}</td>
+                  <td className="py-2 px-4">
+                    {new Date(product.created_at).toLocaleString()}
+                  </td>
+                  <td className="py-2 px-4">{product.description}</td>
+                  <td className="py-2 px-4 flex space-x-2">
+                    <IconButton
+                      color="primary"
+                      aria-label="delete"
+                      size="small"
+                      onClick={() => handleDelete(index)}
+                    >
+                      <DeleteIcon fontSize="small" style={{ color: 'red' }} />
+                    </IconButton>
+                    <IconButton
+                      color="primary"
+                      aria-label="edit"
+                      size="small"
+                      onClick={() => handleEditClick(index)}
+                    >
+                      <EditIcon fontSize="small" style={{ color: 'grey' }} />
+                    </IconButton>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
 
       {/* Edit Dialog */}
       <Dialog open={open} onClose={handleClose}>
@@ -146,7 +149,7 @@ const ViewProduct = () => {
         <DialogContent>
           <TextField
             label="Product Name"
-            name="product_name" // Ensure this matches your product model
+            name="product_name"
             value={selectedProduct?.product_name || ''}
             onChange={handleChange}
             fullWidth
@@ -154,16 +157,16 @@ const ViewProduct = () => {
           />
           <TextField
             label="Supplier"
-            name="supplier_id" // Match the database field
+            name="supplier_id"
             value={selectedProduct?.supplier_id || ''}
             onChange={handleChange}
             fullWidth
             margin="normal"
-            select // Use dropdown for suppliers
+            select
           >
             {suppliers.map((supplier) => (
               <MenuItem key={supplier.id} value={supplier.id}>
-                {supplier.supplier_name} {/* Corrected field */}
+                {supplier.supplier_name}
               </MenuItem>
             ))}
           </TextField>
