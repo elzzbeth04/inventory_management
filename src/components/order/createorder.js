@@ -1,164 +1,133 @@
-import React, { useState, useEffect } from 'react';
-import { supabase } from '../../api/supabaseClient';  
+import React, { useState } from 'react';
+import { supabase } from '../../api/supabaseClient'; // Adjust path as needed
 
-const CreateOrder = () => {
-  const [productId, setProductId] = useState(''); // Store product_id instead of productName
-  const [quantity, setQuantity] = useState('');
+const CreateSupplier = () => {
+  // State variables to hold the input values
   const [supplierName, setSupplierName] = useState('');
-  const [supplierOptions, setSupplierOptions] = useState([]);
-  const [productOptions, setProductOptions] = useState([]); // Fetch product options from the DB
+  const [location, setLocation] = useState('');
+  const [email, setEmail] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  // Snackbar state
   const [openSnackbar, setOpenSnackbar] = useState(false);
 
-  // Define the fetchSuppliersAndProducts function
-  const fetchSuppliersAndProducts = async () => {
-    // Fetch suppliers
-    const { data: suppliers, error: supplierError } = await supabase
-      .from('suppliers')
-      .select('supplier_name');
-
-    if (supplierError) {
-      console.error('Error fetching suppliers:', supplierError.message);
-    } else {
-      setSupplierOptions(suppliers.map(supplier => supplier.supplier_name));
-    }
-
-    // Fetch products
-    const { data: products, error: productError } = await supabase
-      .from('products')
-      .select('id, product_name');
-
-    if (productError) {
-      console.error('Error fetching products:', productError.message);
-    } else {
-      // Filter out duplicate products based on product_name
-      const uniqueProducts = Array.from(new Set(products.map(product => product.product_name)))
-        .map(uniqueName => {
-          return products.find(product => product.product_name === uniqueName);
-        });
-
-      setProductOptions(uniqueProducts); // Set the product options for the dropdown
-    }
-  };
-
-  useEffect(() => {
-    // Fetch supplier and product options when component mounts
-    fetchSuppliersAndProducts();
-  }, []);
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    if (!productId || !quantity || !supplierName) {
-      alert('Please fill all the fields.');
-      return;
-    }
-
-    // Get the selected product name
-    const selectedProduct = productOptions.find(product => product.id === parseInt(productId));
-
-    const newOrder = {
-      product_id: parseInt(productId),  // Ensure product_id is an integer
-      product: selectedProduct.product_name,  // Add the product name to the newOrder object
-      quantity: parseInt(quantity),
-      supplier: supplierName,
-      status: 'Pending',
-      ordered_by: 'User A',
-      delivery_history: 'Pending',
-    };
-
-    console.log('New order:', newOrder); // Log the order object
-
-    const { data, error } = await supabase
-      .from('purchase_orders')
-      .insert([newOrder]);
-
-    if (error) {
-      console.error('Error creating order:', error.message, error.details);
-      alert(`Failed to create order: ${error.message}`);
-    } else {
-      console.log('Order created:', data);
-      setOpenSnackbar(true);
-    }
-
-    setProductId('');
-    setQuantity('');
-    setSupplierName('');
-  };
-
+  // Function to close the Snackbar
   const handleCloseSnackbar = () => {
     setOpenSnackbar(false);
   };
 
-  return (
-    <div className="bg-white shadow-md rounded-lg p-5 max-w-lg mx-auto mt-10">
-      <h1 className="text-2xl font-bold mb-4">Create Order</h1>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div className="flex flex-col md:flex-row gap-4">
-          {/* Product Name Select */}
-          <div className="flex-1">
-            <label className="block text-gray-700">Product Name</label>
-            <select
-              value={productId}
-              onChange={(e) => setProductId(e.target.value)}
-              required
-              className="w-full p-2 border rounded-md text-gray-400"
-            >
-              <option value="">Select a product</option>
-              {productOptions.map((product) => (
-                <option key={product.id} value={product.id}>
-                  {product.product_name}
-                </option>
-              ))}
-            </select>
-          </div>
+  // Function to handle form submission
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
-          {/* Quantity Input */}
-          <div className="flex-1">
-            <label className="block text-gray-700">Quantity</label>
+    // Check if all fields are filled
+    if (!supplierName || !location || !email) {
+      alert('Please fill all the fields.');
+      return;
+    }
+
+    // Construct supplier object
+    const newSupplier = {
+      supplier_name: supplierName,
+      location: location,
+      email: email,
+    };
+
+    setLoading(true);
+
+    // Insert new supplier into the "suppliers" table in Supabase
+    const { data, error } = await supabase
+      .from('suppliers')
+      .insert([newSupplier]);
+
+    setLoading(false);
+
+    if (error) {
+      console.error('Error inserting supplier:', error.message);
+      alert('Error adding supplier. Please try again.');
+    } else {
+      console.log('Supplier Created:', data);
+      setSupplierName('');
+      setLocation('');
+      setEmail('');
+      setOpenSnackbar(true); // Open snackbar on success
+    }
+  };
+
+  return (
+    <div className="flex justify-center mt-10">
+      <div className="bg-white shadow-md rounded-lg p-6 w-full max-w-lg">
+        <h2 className="text-2xl font-semibold mb-6 text-center">Create Supplier</h2>
+        <form onSubmit={handleSubmit} className="space-y-4">
+         
+          <div>
+            <label className="block text-gray-700 text-sm mb-2" htmlFor="supplierName">
+              Supplier Name
+            </label>
             <input
-              type="number"
-              value={quantity}
-              onChange={(e) => setQuantity(e.target.value)}
-              placeholder="Enter quantity"
+              type="text"
+              id="supplierName"
+              value={supplierName}
+              onChange={(e) => setSupplierName(e.target.value)}
+              placeholder="Enter supplier name"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
               required
-              className="w-full p-2 border rounded-md"
             />
           </div>
-        </div>
 
-        {/* Supplier Name Select */}
-        <div className="flex-1">
-          <label className="block text-gray-700">Supplier Name</label>
-          <select
-            value={supplierName}
-            onChange={(e) => setSupplierName(e.target.value)}
-            required
-            className="w-full p-2 border rounded-md text-gray-400"
+          <div>
+            <label className="block text-gray-700 text-sm mb-2" htmlFor="location">
+              Location
+            </label>
+            <input
+              type="text"
+              id="location"
+              value={location}
+              onChange={(e) => setLocation(e.target.value)}
+              placeholder="Enter supplier's location"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+              required
+            />
+          </div>
+
+          <div>
+            <label className="block text-gray-700 text-sm mb-2" htmlFor="email">
+              Email
+            </label>
+            <input
+              type="email"
+              id="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Enter supplier's email"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+              required
+            />
+          </div>
+
+          <button
+            type="submit"
+            className="w-full py-2 mt-4 bg-[#003366] text-white rounded-lg hover:bg-[#004080] focus:outline-none focus:ring-2 focus:ring-blue-500"
+            disabled={loading}
           >
-            <option value="">Select a supplier</option>
-            {supplierOptions.map((supplier) => (
-              <option key={supplier} value={supplier}>
-                {supplier}
-              </option>
-            ))}
-          </select>
-        </div>
+            {loading ? 'Creating Supplier...' : 'Create Supplier'}
+          </button>
+        </form>
 
-        <button type="submit" className="w-full bg-blue-900 text-white py-2 rounded-md hover:bg-blue-800">
-          Create Order
-        </button>
-      </form>
-
-      {openSnackbar && (
-        <div className="fixed top-0 left-1/2 transform -translate-x-1/2 mt-4 bg-green-500 text-white py-2 px-4 rounded-md shadow-md">
-          Order Successfully Created!
-          <button onClick={handleCloseSnackbar} className="ml-4">X</button>
-        </div>
-      )}
+        {/* Snackbar */}
+        {openSnackbar && (
+          <div className="fixed top-0 left-1/2 transform -translate-x-1/2 mt-4 bg-green-500 text-white py-2 px-4 rounded-md shadow-md">
+            Supplier Created Successfully!
+            <button onClick={handleCloseSnackbar} className="ml-4">X</button>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
 
-export default CreateOrder;
+export default CreateSupplier;
+
 
 
 

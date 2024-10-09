@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../../api/supabaseClient'; // Adjust the path according to your folder structure
 
-const AddProduct = ({ onProductAdded }) => { // Added onProductAdded prop
+const AddProduct = ({ onProductAdded }) => { 
   const [product, setProduct] = useState({
     productName: '',
     supplier: '',
@@ -9,7 +9,13 @@ const AddProduct = ({ onProductAdded }) => { // Added onProductAdded prop
     description: ''
   });
 
-  const [suppliers, setSuppliers] = useState([]); // Fetch suppliers from DB
+  const [suppliers, setSuppliers] = useState([]); 
+  const [openSnackbar, setOpenSnackbar] = useState(false); 
+  const [snackbarMessage, setSnackbarMessage] = useState(''); // Custom message for Snackbar
+
+  const handleCloseSnackbar = () => {
+    setOpenSnackbar(false);
+  };
 
   useEffect(() => {
     const fetchSuppliers = async () => {
@@ -19,7 +25,8 @@ const AddProduct = ({ onProductAdded }) => { // Added onProductAdded prop
 
       if (error) {
         console.error('Error fetching suppliers:', error);
-        alert('Failed to load suppliers. Please try again.');
+        setSnackbarMessage('Failed to load suppliers. Please try again.');
+        setOpenSnackbar(true);
       } else {
         setSuppliers(data);
       }
@@ -36,36 +43,33 @@ const AddProduct = ({ onProductAdded }) => { // Added onProductAdded prop
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Product Name:", product.productName);
-    // Find the selected supplier
+    
     const selectedSupplier = suppliers.find(supplier => supplier.id === parseInt(product.supplier));
 
-    // Check if the supplier exists
     if (!selectedSupplier) {
-      console.error("Supplier not found");
-      alert('Please select a valid supplier.');
+      setSnackbarMessage('Please select a valid supplier.');
+      setOpenSnackbar(true);
       return;
     }
 
-    // Insert the product into the database
     const { data, error } = await supabase
-      .from('products') // Ensure this matches your table name
+      .from('products')
       .insert([
         {
-          product_name: product.productName, // Use the correct field names
-          supplier_id: selectedSupplier.id, // Use supplier ID from selected supplier
-          quantity: parseInt(product.quantity), // Convert to integer
+          product_name: product.productName,
+          supplier_id: selectedSupplier.id,
+          quantity: parseInt(product.quantity),
           description: product.description,
         },
       ]);
 
     if (error) {
       console.error('Error inserting product:', error);
-      alert('Error adding product. Please try again.');
+      setSnackbarMessage('Error adding product. Please try again.');
+      setOpenSnackbar(true);
     } else {
-      console.log('Product inserted:', data);
-      alert('Product added successfully!');
-
-      // Reset the form
+      setSnackbarMessage('Product added successfully!');
+      setOpenSnackbar(true);
       setProduct({
         productName: '',
         supplier: '',
@@ -73,7 +77,6 @@ const AddProduct = ({ onProductAdded }) => { // Added onProductAdded prop
         description: ''
       });
 
-      // Notify parent component to update the product list
       if (onProductAdded) {
         onProductAdded();
       }
@@ -81,9 +84,9 @@ const AddProduct = ({ onProductAdded }) => { // Added onProductAdded prop
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen"> {/* Centering container */}
-      <div className="bg-white shadow-md rounded-lg w-full max-w-lg p-5"> {/* Added padding here */}
-        <h2 className="text-xl font-bold mb-5"> Create Product</h2>
+    <div className="flex justify-center items-center min-h-screen">
+      <div className="bg-white shadow-md rounded-lg w-full max-w-lg p-5">
+        <h2 className="text-xl font-bold mb-5">Create Product</h2>
     
         <form onSubmit={handleSubmit}>
           {/* Product Name Input */}
@@ -98,7 +101,7 @@ const AddProduct = ({ onProductAdded }) => { // Added onProductAdded prop
               value={product.productName}
               onChange={handleChange}
               required
-             placeholder="Enter product name"
+              placeholder="Enter product name"
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
             />
           </div>
@@ -114,7 +117,6 @@ const AddProduct = ({ onProductAdded }) => { // Added onProductAdded prop
               value={product.supplier}
               onChange={handleChange}
               required
-              placeholder="Enter supplier name"
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
             >
               <option value="">Select Supplier</option>
@@ -155,7 +157,7 @@ const AddProduct = ({ onProductAdded }) => { // Added onProductAdded prop
               value={product.description}
               onChange={handleChange}
               required
-              placeholder="Enter Descreption"
+              placeholder="Enter Description"
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
               rows="4"
             />
@@ -169,6 +171,14 @@ const AddProduct = ({ onProductAdded }) => { // Added onProductAdded prop
             + Add Product
           </button>
         </form>
+
+        {/* Snackbar */}
+        {openSnackbar && (
+          <div className="fixed top-0 left-1/2 transform -translate-x-1/2 mt-4 bg-green-500 text-white py-2 px-4 rounded-md shadow-md">
+            {snackbarMessage}
+            <button onClick={handleCloseSnackbar} className="ml-4">X</button>
+          </div>
+        )}
       </div>
     </div>
   );
