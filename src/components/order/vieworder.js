@@ -173,7 +173,7 @@ const ViewOrder = () => {
                       <DeleteIcon fontSize="small" style={{ color: '#003366'}} />
                     </IconButton>
                     <IconButton color="primary" aria-label="edit" size="small" onClick={() => handleEditClick(order)}>
-                      <EditIcon fontSize="small" style={{ color: '#003366'}} />
+                      <EditIcon fontSize=" small" style={{ color: '#003366'}} />
                     </IconButton>
                    
                   </td>
