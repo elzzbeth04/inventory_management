@@ -9,13 +9,13 @@ const CreateOrder = () => {
   const [productOptions, setProductOptions] = useState([]); // Fetch product options from the DB
   const [openSnackbar, setOpenSnackbar] = useState(false);
 
-  // Fetch suppliers and products from Supabase
+  // Define the fetchSuppliersAndProducts function
   const fetchSuppliersAndProducts = async () => {
     // Fetch suppliers
     const { data: suppliers, error: supplierError } = await supabase
       .from('suppliers')
       .select('supplier_name');
-    
+
     if (supplierError) {
       console.error('Error fetching suppliers:', supplierError.message);
     } else {
@@ -26,11 +26,17 @@ const CreateOrder = () => {
     const { data: products, error: productError } = await supabase
       .from('products')
       .select('id, product_name');
-    
+
     if (productError) {
       console.error('Error fetching products:', productError.message);
     } else {
-      setProductOptions(products); // Set the product options for the dropdown
+      // Filter out duplicate products based on product_name
+      const uniqueProducts = Array.from(new Set(products.map(product => product.product_name)))
+        .map(uniqueName => {
+          return products.find(product => product.product_name === uniqueName);
+        });
+
+      setProductOptions(uniqueProducts); // Set the product options for the dropdown
     }
   };
 
@@ -46,22 +52,28 @@ const CreateOrder = () => {
       return;
     }
 
+    // Get the selected product name
+    const selectedProduct = productOptions.find(product => product.id === parseInt(productId));
+
     const newOrder = {
-      product_id: productId,  // Store the product_id instead of product name
+      product_id: parseInt(productId),  // Ensure product_id is an integer
+      product: selectedProduct.product_name,  // Add the product name to the newOrder object
       quantity: parseInt(quantity),
       supplier: supplierName,
-      status: 'Pending',  
-      ordered_by: 'User A',  
-      delivery_history: 'Pending',  
+      status: 'Pending',
+      ordered_by: 'User A',
+      delivery_history: 'Pending',
     };
+
+    console.log('New order:', newOrder); // Log the order object
 
     const { data, error } = await supabase
       .from('purchase_orders')
       .insert([newOrder]);
 
     if (error) {
-      console.error('Error creating order:', error);
-      alert('Failed to create order.');
+      console.error('Error creating order:', error.message, error.details);
+      alert(`Failed to create order: ${error.message}`);
     } else {
       console.log('Order created:', data);
       setOpenSnackbar(true);
@@ -147,6 +159,7 @@ const CreateOrder = () => {
 };
 
 export default CreateOrder;
+
 
 
 

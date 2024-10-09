@@ -1,15 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField } from '@mui/material';
-import IconButton from '@mui/material/IconButton';
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
-import { supabase } from '../../api/supabaseClient'; 
+import { supabase } from '../../api/supabaseClient';
 
 const ViewOrder = () => {
   const [orders, setOrders] = useState([]);
-  const [open, setOpen] = useState(false);
-  const [selectedOrder, setSelectedOrder] = useState(null);
 
+  // Fetch orders when the component mounts
   useEffect(() => {
     const fetchOrders = async () => {
       const { data, error } = await supabase
@@ -26,53 +21,49 @@ const ViewOrder = () => {
     fetchOrders();
   }, []);
 
-  // Handle edit button click
-  const handleEditClick = (order) => {
-    setSelectedOrder(order);
-    setOpen(true);
+  // Handle status change for existing orders and update the database
+  const handleStatusChange = async (index, newStatus) => {
+    const updatedOrders = [...orders];
+    const orderId = updatedOrders[index].id;
+
+    // Update the status in the state
+    updatedOrders[index].status = newStatus;
+    setOrders(updatedOrders);
+
+    // Update the status in the database
+    const { error } = await supabase
+      .from('purchase_orders')
+      .update({ status: newStatus }) // Update the status in the database
+      .eq('id', orderId); // Target the specific order using its ID
+
+    if (error) {
+      console.error('Error updating status:', error);
+    } else {
+      console.log(`Order ID ${orderId} status updated to ${newStatus}`);
+
+    }
   };
 
-  // Handle delete button click
-  const handleDelete = async (id) => {
+  // Handle edit action (Implement your logic here)
+  const handleEdit = (orderId) => {
+    console.log('Editing order with ID:', orderId);
+    // Implement edit functionality based on your requirements
+  };
+
+  // Handle delete action
+  const handleDelete = async (orderId) => {
     const { error } = await supabase
       .from('purchase_orders')
       .delete()
-      .eq('id', id);
+      .eq('id', orderId); // Delete the specific order by ID
 
     if (error) {
       console.error('Error deleting order:', error);
     } else {
-      const updatedOrders = orders.filter(order => order.id !== id);
-      setOrders(updatedOrders);
+      // Remove the deleted order from the state
+      setOrders(orders.filter(order => order.id !== orderId));
+      console.log('Order deleted with ID:', orderId);
     }
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-    setSelectedOrder(null);
-  };
-
-  const handleSave = async () => {
-    const { id, product, quantity, supplier, status, ordered_by, created_date } = selectedOrder;
-    const { error } = await supabase
-      .from('purchase_orders')
-      .update({ product, quantity, supplier, status, ordered_by, created_date })
-      .eq('id', id);
-
-    if (error) {
-      console.error('Error updating order:', error);
-    } else {
-      const updatedOrders = orders.map(order =>
-        order.id === id ? selectedOrder : order
-      );
-      setOrders(updatedOrders);
-      handleClose();
-    }
-  };
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setSelectedOrder({ ...selectedOrder, [name]: value });
   };
 
   return (
@@ -89,7 +80,8 @@ const ViewOrder = () => {
               <th className="py-2 px-4">Status</th>
               <th className="py-2 px-4">Ordered By</th>
               <th className="py-2 px-4">Created Date</th>
-              <th className="py-2 px-4">Actions</th>
+              <th className="py-2 px-4">Delivery History</th>
+              <th className="py-2 px-4">Actions</th> {/* Added actions column */}
             </tr>
           </thead>
           <tbody>
@@ -99,87 +91,45 @@ const ViewOrder = () => {
                 <td className="py-2 px-4">{order.product}</td>
                 <td className="py-2 px-4">{order.quantity}</td>
                 <td className="py-2 px-4">{order.supplier}</td>
-                <td className="py-2 px-4">{order.status}</td>
+                <td className="py-2 px-4">
+                  <select
+                    value={order.status}
+                    onChange={(e) => handleStatusChange(index, e.target.value)}
+                    className="border rounded p-1"
+                  >
+                    <option value="Pending">Pending</option>
+                    <option value="Completed">Completed</option>
+                  </select>
+                </td>
                 <td className="py-2 px-4">{order.ordered_by}</td>
                 <td className="py-2 px-4">{new Date(order.created_date).toLocaleDateString()}</td>
-                <td className="py-2 px-4 flex space-x-2">
-                  <IconButton color="primary" onClick={() => handleEditClick(order)}>
-                    <EditIcon fontSize="small" style={{ color: '#003366' }} />
-                  </IconButton>
-                  <IconButton color="primary" onClick={() => handleDelete(order.id)}>
-                    <DeleteIcon fontSize="small" style={{ color: '#003366' }} />
-                  </IconButton>
+                <td className="py-2 px-4">{order.delivery_history}</td>
+                <td className="py-2 px-4">
+                  <button
+                    onClick={() => handleEdit(order.id)}
+                    className="bg-[#003366] hover:bg-[#004080] text-white py-1 px-3 rounded text-xs"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    onClick={() => handleDelete(order.id)}
+                    className="bg-[#003366] hover:bg-[#004080] text-white py-1 px-3 rounded text-xs ml-2"
+                  >
+                    Delete
+                  </button>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
-
-      {/* Edit Dialog */}
-      <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Edit Order</DialogTitle>
-        <DialogContent>
-          <TextField
-            label="Product"
-            name="product"
-            value={selectedOrder?.product || ''}
-            onChange={handleChange}
-            fullWidth
-            margin="normal"
-          />
-          <TextField
-            label="Quantity"
-            name="quantity"
-            type="number"
-            value={selectedOrder?.quantity || ''}
-            onChange={handleChange}
-            fullWidth
-            margin="normal"
-          />
-          <TextField
-            label="Supplier"
-            name="supplier"
-            value={selectedOrder?.supplier || ''}
-            onChange={handleChange}
-            fullWidth
-            margin="normal"
-          />
-          <TextField
-            label="Status"
-            name="status"
-            value={selectedOrder?.status || ''}
-            onChange={handleChange}
-            fullWidth
-            margin="normal"
-          />
-          <TextField
-            label="Ordered By"
-            name="ordered_by"
-            value={selectedOrder?.ordered_by || ''}
-            onChange={handleChange}
-            fullWidth
-            margin="normal"
-          />
-          <TextField
-            label="Created Date"
-            name="created_date"
-            type="date"
-            value={selectedOrder?.created_date?.split('T')[0] || ''}
-            onChange={handleChange}
-            fullWidth
-            margin="normal"
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} color="primary">
-            Cancel
-          </Button>
-          <Button onClick={handleSave} color="primary">
-            Save
-          </Button>
-        </DialogActions>
-      </Dialog>
+      <div className="flex justify-end mt-4">
+        <button
+          className="bg-[#003366] text-white py-2 px-4 rounded hover:bg-[#004080]"
+        >
+          Update
+        </button>
+      </div>
     </div>
   );
 };
